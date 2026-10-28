@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta content="pos_terminal" name="shell-type" />
+  <title>FacturaFácil POS - Terminal de Ventas (Caja Rápida)</title>
+
+  <!-- Fuentes e Iconos -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet" />
+
+  <!-- Hoja de Estilos externa -->
+  <link rel="stylesheet" href="../css/style.css" />
+
+  <!-- CDN de Tailwind y Configuración JS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../js/index.js"></script>
+  <script src="../js/db.js"></script>
+</head>
+
+<body class="bg-surface font-body-md text-on-surface antialiased select-none">
+  <!-- Encabezado Superior -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] no-print">
+    <div class="h-16 w-full px-gutter-desktop flex items-center justify-between gap-space-md">
+      <!-- Sección Izquierda Logo y Navegación de Roles -->
+      <div class="flex items-center gap-space-md min-w-max">
+        <div class="flex items-center gap-space-sm cursor-pointer" onclick="window.location.href='../index.html'">
+          <div class="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-white font-bold font-headline-md text-lg">FF</div>
+          <span class="font-headline-md text-headline-md tracking-tight text-on-surface">FacturaFácil</span>
+          <span class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm uppercase px-space-xs py-0.5 rounded font-semibold">DTE SV</span>
+        </div>
+
+        <div class="h-6 w-[1px] bg-outline-variant/40 hidden xl:block"></div>
+
+        <div class="hidden xl:flex items-center gap-space-xs px-space-sm py-1.5 rounded-lg bg-surface-container-low text-left">
+          <span class="material-symbols-outlined text-secondary text-[18px]">storefront</span>
+          <div>
+            <div class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Sucursal Escalón - Caja #02</div>
+            <div class="font-label-sm text-label-sm text-secondary leading-tight">En Línea con Ministerio de Hacienda</div>
+          </div>
+        </div>
+
+        <!-- Switch de Roles -->
+        <div class="flex items-center bg-surface-container-low p-0.5 rounded-lg">
+          <a class="flex items-center gap-1 px-space-sm py-1 rounded font-label-md text-label-md bg-secondary text-white font-semibold shadow-sm transition-all" href="pos.html">
+            <span class="material-symbols-outlined text-[16px]">point_of_sale</span>
+            <span>Terminal POS</span>
+          </a>
+          <a class="flex items-center gap-1 px-space-sm py-1 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" href="../index.html">
+            <span class="material-symbols-outlined text-[16px]">admin_panel_settings</span>
+            <span>Panel Admin</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Buscador rápido en Header -->
+      <div class="flex items-center gap-space-md flex-1 max-w-lg mx-space-md hidden md:flex">
+        <div class="relative w-full">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">barcode_scanner</span>
+          <input id="headerBarcodeInput" class="w-full h-9 pl-9 pr-space-md rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all" placeholder="Escanear código de barra o SKU..." type="text" />
+        </div>
+        <div class="flex items-center gap-1.5 px-space-sm py-1.5 rounded-full bg-secondary-container/40 text-secondary whitespace-nowrap">
+          <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+          <span class="font-label-sm text-label-sm font-semibold text-on-secondary-container">MH DTE: En Línea</span>
+        </div>
+      </div>
+
+      <!-- Sección Derecha: Información del Cajero -->
+      <div class="flex items-center gap-space-sm min-w-max justify-end">
+        <div class="hidden lg:flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-surface-container-low font-label-sm text-label-sm text-on-surface">
+          <span class="material-symbols-outlined text-secondary text-[16px]">wifi</span>
+          <span class="font-semibold">Sync 100%</span>
+        </div>
+        <div class="hidden 2xl:flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-surface-container-low font-label-sm text-label-sm text-on-surface">
+          <span class="material-symbols-outlined text-on-surface-variant text-[16px]">timer</span>
+          <span class="font-medium">Turno: 05h 42m</span>
+          <span class="text-outline">|</span>
+          <span class="font-semibold text-secondary font-numeric-pos-md text-body-sm">Caja: $350.00</span>
+        </div>
+        <div class="h-6 w-[1px] bg-outline-variant/40"></div>
+        <div class="flex items-center gap-space-sm pl-1">
+          <div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center font-bold text-xs">CM</div>
+          <div class="hidden sm:block text-left">
+            <div class="font-label-md text-label-md font-semibold text-on-surface leading-tight">Carlos Mendoza</div>
+            <div class="font-label-sm text-label-sm text-on-surface-variant leading-tight">Cajero / Operador</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menú Lateral Sidebar -->
+  <aside class="fixed left-0 top-16 bottom-0 w-64 bg-surface-container-lowest z-40 flex flex-col justify-between py-space-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] no-print">
+    <div class="px-space-md flex-1">
+      <div class="font-label-sm text-label-sm uppercase tracking-wider text-outline px-space-sm mb-space-sm">
+        Operaciones &amp; Gestión
+      </div>
+      <nav class="flex flex-col gap-1">
+        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg bg-secondary-container text-on-secondary-container font-semibold transition-all" data-path="terminal-pos-caja-rapida" href="pos.html">
+          <span class="material-symbols-outlined text-[20px]">point_of_sale</span>
+          <span class="font-label-md text-label-md">Terminal POS (Caja Rápida)</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard-kpis" href="../index.html">
+          <span class="material-symbols-outlined text-[20px]">analytics</span>
+          <span class="font-label-md text-label-md">Dashboard &amp; KPIs</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="catalogo-inventario" href="inventario.html">
+          <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+          <span class="font-label-md text-label-md">Catálogo &amp; Inventario</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="facturas-dte-hacienda" href="facturas.html">
+          <span class="material-symbols-outlined text-[20px]">receipt_long</span>
+          <span class="font-label-md text-label-md">Facturas &amp; DTE Hacienda</span>
+        </a>
+        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="directorio-clientes" href="clientes.html">
+          <span class="material-symbols-outlined text-[20px]">badge</span>
+          <span class="font-label-md text-label-md">Directorio Clientes</span>
+        </a>
+      </nav>
+    </div>
+    <div class="px-space-md pt-space-sm">
+      <div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col gap-1">
+        <div class="flex items-center justify-between text-on-surface-variant">
+          <span class="font-label-sm text-label-sm font-semibold">Firma Electrónica MH</span>
+          <span class="material-symbols-outlined text-[14px] text-secondary">verified</span>
+        </div>
+        <div class="font-label-sm text-label-sm text-on-surface-variant">Certificado Activo (SV)</div>
+        <div class="font-label-sm text-label-sm text-outline">IVA Tasa 13% • USD</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Contenido Principal POS: Catálogo a la izquierda, Carrito Virtual a la derecha -->
+  <div class="pl-64 no-print">
+    <main class="pt-16 bg-surface min-h-screen flex flex-col lg:flex-row">
+      <!-- Sección Izquierda: Catálogo de Productos y Filtros (60%-65%) -->
+      <section class="flex-1 p-space-md lg:p-space-lg flex flex-col gap-space-md overflow-y-auto max-h-[calc(100vh-4rem)]">
+        <!-- Barra de Búsqueda y Filtros de Categoría -->
+        <div class="flex flex-col gap-space-sm bg-surface-container-lowest p-space-md rounded-2xl shadow-sm">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-space-sm">
+            <div class="relative flex-1">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+              <input id="productSearchInput" class="w-full h-11 pl-10 pr-4 rounded-xl bg-surface-container-low font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container focus:ring-2 focus:ring-secondary/30 transition-all" placeholder="Buscar por nombre, SKU o código de barra (ej. Laptop, Mouse)..." type="text" autofocus />
+            </div>
+            <button id="btnClearSearch" class="h-11 px-space-md rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-md text-label-md flex items-center justify-center gap-1 transition-colors">
+              <span class="material-symbols-outlined text-[18px]">clear_all</span>
+              <span>Limpiar</span>
+            </button>
+          </div>
+
+          <!-- Categorías en formato Chips / Pills -->
+          <div id="categoryPillsContainer" class="flex items-center gap-2 overflow-x-auto pb-1 pt-1 text-label-md font-label-md">
+            <!-- Renderizado dinámico -->
+          </div>
+        </div>
+
+        <!-- Grid de Productos -->
+        <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-space-md pb-12">
+          <!-- Tarjetas renderizadas dinámicamente con JavaScript -->
+        </div>
+      </section>
+
+      <!-- Sección Derecha: Carrito de Compras Virtual y Facturación (35%-40%) -->
+      <aside class="w-full lg:w-[440px] xl:w-[480px] bg-surface-container-lowest border-l border-outline-variant/30 flex flex-col justify-between shadow-lg lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)]">
+        <!-- Encabezado de la Orden y Selección de Cliente -->
+        <div class="p-space-md border-b border-outline-variant/30 flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-secondary text-[22px]">shopping_cart</span>
+              <h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Orden de Venta</h2>
+            </div>
+            <div class="flex items-center gap-1">
+              <button id="btnClearCart" class="px-2.5 py-1 text-xs text-error hover:bg-error-container/40 rounded-lg font-medium transition-colors flex items-center gap-1" title="Vaciar carrito">
+                <span class="material-symbols-outlined text-[16px]">delete_sweep</span>
+                <span>Vaciar</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Selector de Cliente con DUI / NIT -->
+          <div class="flex flex-col gap-1">
+            <label class="font-label-sm text-label-sm text-outline uppercase tracking-wider flex items-center justify-between">
+              <span>Cliente Receptor (DTE)</span>
+              <button id="btnQuickAddClient" class="text-secondary hover:underline font-semibold flex items-center gap-0.5">
+                <span class="material-symbols-outlined text-[14px]">person_add</span> + Nuevo
+              </button>
+            </label>
+            <div class="relative">
+              <select id="clientSelect" class="w-full h-10 pl-3 pr-8 rounded-xl bg-surface-container-low font-label-md text-label-md text-on-surface appearance-none focus:outline-none focus:ring-2 focus:ring-secondary/30 cursor-pointer">
+                <!-- Opciones de clientes dinámicas -->
+              </select>
+              <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">expand_more</span>
+            </div>
+            <div id="clientDuiPreview" class="font-label-sm text-label-sm text-secondary font-medium px-1">
+              DUI: 00000000-0 • Consumidor Final
+            </div>
+          </div>
+
+          <!-- Selector de Tipo de Documento -->
+          <div class="flex items-center bg-surface-container-low p-1 rounded-xl">
+            <button id="btnDocFactura" class="flex-1 py-1.5 text-center font-label-md text-label-md rounded-lg bg-surface-container-lowest font-semibold text-on-surface shadow-sm transition-all">
+              Factura (01)
+            </button>
+            <button id="btnDocCCF" class="flex-1 py-1.5 text-center font-label-md text-label-md rounded-lg text-on-surface-variant hover:text-on-surface transition-all">
+              Crédito Fiscal (03)
+            </button>
+          </div>
+        </div>
+
+        <!-- Lista de Artículos en el Carrito (Scrollable) -->
+        <div id="cartItemsList" class="flex-1 p-space-md overflow-y-auto divide-y divide-outline-variant/20 flex flex-col">
+          <!-- Items renderizados dinámicamente -->
+        </div>
+
+        <!-- Resumen de Totales y Botón de Pago -->
+        <div class="p-space-md bg-surface-container-low/70 border-t border-outline-variant/30 flex flex-col gap-3">
+          <div class="flex flex-col gap-1.5 text-body-sm font-body-sm">
+            <div class="flex items-center justify-between text-on-surface-variant">
+              <span>Subtotal Neto (Sin IVA):</span>
+              <span id="cartSubtotalText" class="font-numeric-pos-md font-semibold text-on-surface">$0.00</span>
+            </div>
+            <div class="flex items-center justify-between text-on-surface-variant">
+              <span class="flex items-center gap-1">
+                <span>IVA Retenido (13% SV):</span>
+                <span class="text-[10px] bg-secondary-container/60 text-secondary px-1.5 py-0.2 rounded font-semibold">TASA LEGAL</span>
+              </span>
+              <span id="cartIvaText" class="font-numeric-pos-md font-semibold text-secondary">$0.00</span>
+            </div>
+            <div class="h-px bg-outline-variant/40 my-1"></div>
+            <div class="flex items-center justify-between">
+              <span class="font-headline-sm text-headline-sm font-bold text-on-surface">TOTAL A PAGAR:</span>
+              <span id="cartTotalText" class="font-numeric-pos-lg text-2xl font-bold text-on-surface font-numeric-pos-lg leading-none">$0.00</span>
+            </div>
+          </div>
+
+          <!-- Botón de Cobro / Checkout -->
+          <button id="btnProceedPayment" class="w-full h-13 py-3.5 bg-secondary text-white rounded-xl font-headline-sm text-headline-sm font-bold shadow-md hover:bg-[#00583b] active:scale-[0.99] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:pointer-events-none" disabled>
+            <span class="material-symbols-outlined text-[22px]">payments</span>
+            <span>COBRAR / PROCESAR VENTA</span>
+          </button>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <!-- MODAL DE PAGO / CHECKOUT PASARELA -->
+  <div id="paymentModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-surface-container-lowest rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden flex flex-col transform transition-all">
+      <div class="p-space-md bg-surface-container-low border-b border-outline-variant/30 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-secondary text-white flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-[18px]">verified_user</span>
+          </div>
+          <div>
+            <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Procesar Cobro Seguro</h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">Pasarela de Pagos &amp; Facturación DTE El Salvador</p>
+          </div>
+        </div>
+        <button id="btnClosePaymentModal" class="p-1 rounded-lg hover:bg-surface-container text-outline hover:text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="p-space-lg flex flex-col gap-space-md">
+        <div class="p-space-md rounded-xl bg-surface-container-low flex items-center justify-between">
+          <span class="font-label-md text-label-md text-on-surface-variant uppercase font-semibold">Total Liquidación:</span>
+          <span id="modalTotalPayable" class="font-numeric-pos-lg text-2xl font-bold text-secondary font-numeric-pos-lg">$0.00 USD</span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label class="font-label-sm text-label-sm text-outline uppercase font-semibold">Selecciona Método de Pago</label>
+          <div class="grid grid-cols-4 gap-2">
+            <button data-method="efectivo" class="payment-method-btn p-2.5 rounded-xl border-2 border-secondary bg-secondary-container/20 flex flex-col items-center justify-center gap-1 transition-all">
+              <span class="material-symbols-outlined text-secondary text-[22px]">payments</span>
+              <span class="font-label-sm text-label-sm font-semibold text-on-surface">Efectivo</span>
+            </button>
+            <button data-method="tarjeta" class="payment-method-btn p-2.5 rounded-xl border border-outline-variant/40 hover:bg-surface-container-low flex flex-col items-center justify-center gap-1 transition-all">
+              <span class="material-symbols-outlined text-on-surface-variant text-[22px]">credit_card</span>
+              <span class="font-label-sm text-label-sm text-on-surface">Tarjeta</span>
+            </button>
+            <button data-method="chivo" class="payment-method-btn p-2.5 rounded-xl border border-outline-variant/40 hover:bg-surface-container-low flex flex-col items-center justify-center gap-1 transition-all">
+              <span class="material-symbols-outlined text-on-surface-variant text-[22px]">qr_code_2</span>
+              <span class="font-label-sm text-label-sm text-on-surface">Chivo / QR</span>
+            </button>
+            <button data-method="transferencia" class="payment-method-btn p-2.5 rounded-xl border border-outline-variant/40 hover:bg-surface-container-low flex flex-col items-center justify-center gap-1 transition-all">
+              <span class="material-symbols-outlined text-on-surface-variant text-[22px]">account_balance</span>
+              <span class="font-label-sm text-label-sm text-on-surface">Banco UNI</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. Efectivo -->
+        <div id="methodSectionEfectivo" class="flex flex-col gap-3">
+          <div class="flex flex-col gap-1">
+            <label class="font-label-sm text-label-sm text-on-surface-variant font-medium">Efectivo Recibido ($ USD)</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-on-surface text-lg">$</span>
+              <input id="cashReceivedInput" class="w-full h-12 pl-8 pr-4 rounded-xl bg-surface-container-low font-numeric-pos-lg text-xl font-bold text-on-surface focus:outline-none focus:bg-surface-container" placeholder="0.00" type="number" step="0.05" />
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="cash-quick-btn px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md font-semibold hover:bg-surface-container-high transition-colors" data-amt="5">$5</button>
+            <button class="cash-quick-btn px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md font-semibold hover:bg-surface-container-high transition-colors" data-amt="10">$10</button>
+            <button class="cash-quick-btn px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md font-semibold hover:bg-surface-container-high transition-colors" data-amt="20">$20</button>
+            <button class="cash-quick-btn px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md font-semibold hover:bg-surface-container-high transition-colors" data-amt="50">$50</button>
+            <button class="cash-quick-btn px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md font-semibold hover:bg-surface-container-high transition-colors" data-amt="100">$100</button>
+            <button id="cashExactBtn" class="px-3 py-1.5 rounded-lg bg-secondary-container text-on-secondary-container font-label-md text-label-md font-semibold hover:opacity-90 transition-opacity ml-auto">Exacto</button>
+          </div>
+          <div class="p-space-md rounded-xl bg-surface-container flex items-center justify-between">
+            <span class="font-label-md text-label-md text-on-surface-variant font-medium">Cambio a Devolver:</span>
+            <span id="cashChangeDisplay" class="font-numeric-pos-lg text-xl font-bold text-on-surface">$0.00</span>
+          </div>
+        </div>
+
+        <!-- 2. Tarjeta -->
+        <div id="methodSectionTarjeta" class="hidden flex flex-col gap-3">
+          <div class="p-space-sm rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-center justify-between text-xs">
+            <span class="flex items-center gap-1 font-semibold text-secondary">
+              <span class="material-symbols-outlined text-[16px]">lock</span> Pasarela Segura Pagadito / Stripe SV
+            </span>
+            <span class="text-outline">Token 256-bit TLS</span>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label class="font-label-sm text-label-sm text-on-surface-variant">Número de Tarjeta</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">credit_card</span>
+              <input id="cardNumInput" class="w-full h-10 pl-9 pr-4 rounded-xl bg-surface-container-low font-mono text-sm text-on-surface focus:outline-none focus:bg-surface-container" placeholder="4242 •••• •••• 4242" value="4242 •••• •••• 4242" type="text" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex flex-col gap-1">
+              <label class="font-label-sm text-label-sm text-on-surface-variant">Vencimiento (MM/AA)</label>
+              <input id="cardExpInput" class="h-10 px-3 rounded-xl bg-surface-container-low font-mono text-sm text-on-surface focus:outline-none focus:bg-surface-container" placeholder="12/28" value="12/28" type="text" />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="font-label-sm text-label-sm text-on-surface-variant">CVV (3 dígitos)</label>
+              <input id="cardCvvInput" class="h-10 px-3 rounded-xl bg-surface-container-low font-mono text-sm text-on-surface focus:outline-none focus:bg-surface-container" placeholder="123" value="892" type="password" maxlength="4" />
+            </div>
+          </div>
+
+          <div id="cardTokenContainer" class="p-2 rounded-lg bg-secondary-container/30 text-on-secondary-container font-mono text-xs flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px] text-secondary">token</span>
+            <span>Token: <strong id="cardTokenDisplay">tok_sv_live_98e1f0a289b4</strong></span>
+          </div>
+        </div>
+
+        <!-- 3. Chivo / QR -->
+        <div id="methodSectionChivo" class="hidden flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-xl gap-2 text-center">
+          <div class="w-32 h-32 bg-white p-2 rounded-xl border border-outline-variant/40 flex items-center justify-center shadow-sm">
+            <svg class="w-full h-full text-black" viewBox="0 0 100 100" fill="currentColor">
+              <rect x="10" y="10" width="25" height="25" fill="#000" />
+              <rect x="15" y="15" width="15" height="15" fill="#fff" />
+              <rect x="65" y="10" width="25" height="25" fill="#000" />
+              <rect x="70" y="15" width="15" height="15" fill="#fff" />
+              <rect x="10" y="65" width="25" height="25" fill="#000" />
+              <rect x="15" y="70" width="15" height="15" fill="#fff" />
+              <rect x="42" y="15" width="10" height="10" />
+              <rect x="42" y="42" width="16" height="16" />
+              <rect x="15" y="45" width="12" height="10" />
+              <rect x="70" y="45" width="15" height="20" />
+              <rect x="42" y="70" width="20" height="15" />
+              <rect x="75" y="75" width="15" height="15" />
+            </svg>
+          </div>
+          <span class="font-label-sm text-label-sm font-semibold text-secondary">Escanea con Chivo Wallet o App Bancaria</span>
+          <span class="font-body-sm text-xs text-outline">Liquidación instantánea en Dólares (USD) o Bitcoin</span>
+        </div>
+
+        <!-- 4. Transferencia -->
+        <div id="methodSectionTransferencia" class="hidden flex flex-col gap-2 p-3 bg-surface-container-low rounded-xl">
+          <div class="font-label-sm text-label-sm text-on-surface font-semibold">Cuenta Bancaria para Transferencias UNI:</div>
+          <div class="font-mono text-xs text-on-surface-variant">Banco Cuscatlán: 01-402-009812-4</div>
+          <div class="font-mono text-xs text-on-surface-variant">Banco Agrícola: 504-098122-00</div>
+          <input id="transferRefInput" class="h-9 px-3 rounded-lg bg-surface-container font-body-sm text-xs text-on-surface focus:outline-none" placeholder="Ingresar # Comprobante / Referencia Bancaria" />
+        </div>
+      </div>
+
+      <div class="p-space-md bg-surface-container-low border-t border-outline-variant/30 flex items-center justify-between">
+        <button id="btnCancelPayment" class="px-space-md py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container font-label-md text-label-md font-semibold transition-colors">
+          Cancelar
+        </button>
+        <button id="btnConfirmSaleAndDte" class="px-space-lg py-2.5 rounded-xl bg-secondary text-white font-label-md text-label-md font-bold shadow-md hover:bg-[#00583b] active:scale-[0.98] transition-all flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">verified</span>
+          <span>AUTORIZAR Y EMITIR DTE MH</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE TICKET / FACTURA ELECTRÓNICA DTE -->
+  <div id="invoiceSuccessModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-surface-container-lowest rounded-2xl max-w-md w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="p-space-md bg-secondary text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[24px]">check_circle</span>
+          <div>
+            <h4 class="font-headline-sm text-headline-sm font-bold">¡Venta Exitosa!</h4>
+            <span class="text-xs opacity-90">DTE Aprobado por Ministerio de Hacienda</span>
+          </div>
+        </div>
+        <button id="btnCloseInvoiceModal" class="text-white/80 hover:text-white">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <!-- Área de Ticket Térmico 80mm -->
+      <div class="p-6 overflow-y-auto bg-gray-50 flex justify-center">
+        <div id="thermalTicketPrintArea" class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm w-full max-w-[340px] text-black font-mono text-xs flex flex-col gap-2">
+          <div class="text-center flex flex-col items-center">
+            <div class="font-bold text-sm tracking-wider">FACTURAFÁCIL S.A. DE C.V.</div>
+            <div>NIT: 0614-150220-101-3 • NRC: 290145-2</div>
+            <div>Sucursal Escalón - San Salvador</div>
+            <div class="text-[10px] text-gray-500">DOCUMENTO TRIBUTARIO ELECTRÓNICO (DTE)</div>
+            <div id="ticketTipoDteHeader" class="font-bold text-xs mt-1 bg-gray-100 px-2 py-0.5 rounded">FACTURA ELECTRÓNICA (01)</div>
+          </div>
+
+          <div class="border-t border-dashed border-gray-400 my-1"></div>
+
+          <div class="flex flex-col gap-0.5 text-[11px]">
+            <div><strong>N° DTE:</strong> <span id="ticketNumeroDte">DTE-01-M001-00004929</span></div>
+            <div><strong>Código Gen (UUID):</strong> <span id="ticketUuid" class="text-[9px] break-all">...</span></div>
+            <div><strong>Sello MH:</strong> <span id="ticketSelloMh" class="text-[9px] break-all">...</span></div>
+            <div><strong>Fecha/Hora:</strong> <span id="ticketFechaHora">...</span></div>
+            <div><strong>Cajero:</strong> Carlos Mendoza (Caja #02)</div>
+            <div><strong>Cliente:</strong> <span id="ticketClienteNombre">...</span></div>
+            <div><strong>DUI/NIT:</strong> <span id="ticketClienteDoc">...</span></div>
+          </div>
+
+          <div class="border-t border-dashed border-gray-400 my-1"></div>
+
+          <table class="w-full text-left text-[11px]">
+            <thead>
+              <tr class="border-b border-gray-300">
+                <th class="py-1">Cant</th>
+                <th class="py-1">Descripción</th>
+                <th class="py-1 text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody id="ticketItemsTbody" class="divide-y divide-gray-100">
+            </tbody>
+          </table>
+
+          <div class="border-t border-dashed border-gray-400 my-1"></div>
+
+          <div class="flex flex-col gap-1 text-[11px]">
+            <div class="flex justify-between">
+              <span>Subtotal Neto:</span>
+              <span id="ticketSubtotalNeto">$0.00</span>
+            </div>
+            <div class="flex justify-between font-semibold">
+              <span>IVA (13%):</span>
+              <span id="ticketIvaMonto">$0.00</span>
+            </div>
+            <div class="flex justify-between text-sm font-bold border-t border-black pt-1">
+              <span>TOTAL A PAGAR:</span>
+              <span id="ticketTotalPagar">$0.00</span>
+            </div>
+            <div class="flex justify-between text-[10px] text-gray-600 mt-1">
+              <span>Método de Pago:</span>
+              <span id="ticketMetodoPago">Efectivo</span>
+            </div>
+          </div>
+
+          <div class="border-t border-dashed border-gray-400 my-1"></div>
+
+          <div class="flex flex-col items-center text-center gap-1 mt-1">
+            <div class="w-24 h-24 bg-white border border-black p-1 flex items-center justify-center">
+              <svg class="w-full h-full text-black" viewBox="0 0 100 100" fill="currentColor">
+                <rect x="10" y="10" width="25" height="25" fill="#000" />
+                <rect x="15" y="15" width="15" height="15" fill="#fff" />
+                <rect x="65" y="10" width="25" height="25" fill="#000" />
+                <rect x="70" y="15" width="15" height="15" fill="#fff" />
+                <rect x="10" y="65" width="25" height="25" fill="#000" />
+                <rect x="15" y="70" width="15" height="15" fill="#fff" />
+                <rect x="42" y="15" width="10" height="10" />
+                <rect x="42" y="42" width="16" height="16" />
+                <rect x="15" y="45" width="12" height="10" />
+                <rect x="70" y="45" width="15" height="20" />
+                <rect x="42" y="70" width="20" height="15" />
+                <rect x="75" y="75" width="15" height="15" />
+              </svg>
+            </div>
+            <div class="text-[9px] text-gray-500">Consulta este DTE escaneando el código QR o en https://factura.gob.sv</div>
+            <div class="text-[8px] text-gray-400">Gracias por su compra • FacturaFácil POS</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-space-md bg-surface-container-low border-t border-outline-variant/30 flex items-center justify-between gap-2">
+        <button id="btnPrintTicket" class="flex-1 py-2.5 rounded-xl bg-primary text-white font-label-md text-label-md font-semibold hover:bg-surface-tint transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <span class="material-symbols-outlined text-[18px]">print</span>
+          <span>Imprimir Ticket (80mm)</span>
+        </button>
+        <button id="btnNewSale" class="flex-1 py-2.5 rounded-xl bg-secondary text-white font-label-md text-label-md font-bold hover:bg-[#00583b] transition-all flex items-center justify-center gap-1.5 shadow-sm">
+          <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+          <span>Nueva Venta</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL RÁPIDO PARA CREAR CLIENTE -->
+  <div id="quickClientModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-surface-container-lowest rounded-2xl max-w-md w-full shadow-2xl p-space-lg flex flex-col gap-4">
+      <div class="flex items-center justify-between border-b pb-2">
+        <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Registrar Cliente Express</h3>
+        <button id="btnCloseQuickClient" class="text-outline hover:text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+      <form id="quickClientForm" class="flex flex-col gap-3">
+        <div class="flex flex-col gap-1">
+          <label class="font-label-sm text-label-sm text-on-surface-variant">Nombre o Razón Social *</label>
+          <input id="newClientName" class="h-10 px-3 rounded-xl bg-surface-container-low font-body-sm text-on-surface focus:outline-none" placeholder="Ej. Juan Pérez / Tech Solutions" required />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="font-label-sm text-label-sm text-on-surface-variant">DUI o NIT (El Salvador) *</label>
+          <input id="newClientDoc" class="h-10 px-3 rounded-xl bg-surface-container-low font-body-sm text-on-surface focus:outline-none" placeholder="Ej. 05123456-7 o 0614-xxxxxx-xxx-x" required />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="font-label-sm text-label-sm text-on-surface-variant">Tipo de Contribuyente</label>
+          <select id="newClientType" class="h-10 px-3 rounded-xl bg-surface-container-low font-label-md text-label-md text-on-surface focus:outline-none">
+            <option value="Consumidor Final">Consumidor Final</option>
+            <option value="Crédito Fiscal (CCF)">Crédito Fiscal (CCF)</option>
+          </select>
+        </div>
+        <div class="flex flex-col gap-1">
+          <label class="font-label-sm text-label-sm text-on-surface-variant">Teléfono</label>
+          <input id="newClientPhone" class="h-10 px-3 rounded-xl bg-surface-container-low font-body-sm text-on-surface focus:outline-none" placeholder="+503 7000-0000" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" id="btnCancelQuickClient" class="px-4 py-2 rounded-xl text-on-surface-variant font-label-md text-label-md">Cancelar</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-secondary text-white font-label-md text-label-md font-semibold shadow-sm hover:bg-[#00583b]">Guardar y Asignar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Lógica de Operación del Terminal POS -->
+  <script src="../js/pos.js"></script>
+</body>
+
+</html>
