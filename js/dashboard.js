@@ -1,12 +1,12 @@
 /**
- * FacturaFácil POS & Analytics - Lógica de Tablero Ejecutivo (Panel Admin)
- * Rol: ADMIN / Dueño
+ * FACTURAFÁCIL POS & ANALYTICS - LÓGICA DE TABLERO EJECUTIVO (PANEL ADMIN)
+ * Control Total: KPIs Financieros, Auditoría Fiscal DTE, Gráficas y Anulación de Comprobantes
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!window.facturaDB) return;
 
-  // Referencias a KPIs
+  // Referencias a Elementos DOM
   const kpiVentasBrutas = document.getElementById('kpiVentasBrutas');
   const kpiIvaDebito = document.getElementById('kpiIvaDebito');
   const kpiTransacciones = document.getElementById('kpiTransacciones');
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const txFilterState = document.getElementById('txFilterState');
   const txFilterType = document.getElementById('txFilterType');
 
-  // Modal de Detalle DTE
+  // Modal de Detalle DTE Oficial
   const dteDetailModal = document.getElementById('dteDetailModal');
   const btnCloseDteModal = document.getElementById('btnCloseDteModal');
   const dteDetailContent = document.getElementById('dteDetailContent');
@@ -96,7 +96,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const matchQuery = !query || 
         f.numero_dte.toLowerCase().includes(query) ||
         f.cliente_nombre.toLowerCase().includes(query) ||
-        f.cliente_doc.toLowerCase().includes(query);
+        f.cliente_doc.toLowerCase().includes(query) ||
+        f.codigo_generacion_uuid.toLowerCase().includes(query);
 
       const matchState = filterState === 'all' || 
         (filterState === 'approved' && f.estado_mh.includes('Éxito')) ||
@@ -129,22 +130,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const isApproved = f.estado_mh.includes('Éxito');
       const isVoid = f.estado_mh.includes('Anulada');
-      const horaStr = new Date(f.fecha_hora).toLocaleTimeString('es-SV', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const horaStr = new Date(f.fecha_hora).toLocaleTimeString('es-SV', { hour: '2-digit', minute: '2-digit' });
 
       tr.innerHTML = `
-        <td class="px-space-md py-3 font-semibold font-numeric-pos-md text-on-surface flex items-center gap-1.5">
-          <span class="material-symbols-outlined text-[16px] ${isApproved ? 'text-secondary' : isVoid ? 'text-error' : 'text-outline'}">
-            ${isApproved ? 'verified_user' : isVoid ? 'cancel' : 'hourglass_top'}
-          </span>
-          <span class="${isVoid ? 'line-through text-outline' : ''}">${f.numero_dte}</span>
+        <td class="px-space-md py-3 font-semibold font-numeric-pos-md text-on-surface">
+          <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px] ${isApproved ? 'text-secondary' : isVoid ? 'text-error' : 'text-outline'}">
+              ${isApproved ? 'verified_user' : isVoid ? 'cancel' : 'hourglass_top'}
+            </span>
+            <span class="${isVoid ? 'line-through text-outline' : ''}">${f.numero_dte}</span>
+          </div>
+          <div class="text-[10px] text-outline font-mono">${f.codigo_generacion_uuid.substring(0, 18)}...</div>
         </td>
-        <td class="px-space-md py-3 text-on-surface-variant font-numeric-pos-md">${horaStr}</td>
+        <td class="px-space-md py-3 text-on-surface-variant font-numeric-pos-md text-xs">${horaStr}</td>
         <td class="px-space-md py-3">
-          <div class="font-semibold text-on-surface leading-tight">${f.cliente_nombre}</div>
-          <div class="font-label-sm text-label-sm text-outline">${f.cliente_doc.startsWith('0614') ? 'NIT' : 'DUI'}: ${f.cliente_doc}</div>
+          <div class="font-semibold text-xs text-on-surface leading-tight">${f.cliente_nombre}</div>
+          <div class="font-label-sm text-[11px] text-outline">${f.cliente_doc.startsWith('0614') ? 'NIT' : 'DUI'}: ${f.cliente_doc}</div>
         </td>
         <td class="px-space-md py-3">
-          <span class="px-2 py-0.5 rounded font-label-sm text-label-sm font-semibold ${
+          <span class="inline-block whitespace-nowrap px-2 py-0.5 rounded font-label-sm text-xs font-semibold ${
             f.tipo_dte.includes('CCF') ? 'bg-surface-container text-on-surface' : 'bg-surface-container-high text-on-surface'
           }">${f.tipo_dte}</span>
         </td>
@@ -166,38 +170,44 @@ document.addEventListener('DOMContentLoaded', () => {
               : isVoid
               ? 'bg-error-container/50 text-on-error-container'
               : 'bg-surface-container text-on-surface'
-          } font-label-sm text-label-sm font-semibold whitespace-nowrap">
+          } font-label-sm text-xs font-semibold whitespace-nowrap">
             <span class="w-1.5 h-1.5 rounded-full ${isApproved ? 'bg-secondary' : isVoid ? 'bg-error' : 'bg-outline animate-ping'}"></span>
             <span>${f.estado_mh}</span>
           </span>
         </td>
         <td class="px-space-md py-3 text-center">
           <div class="flex items-center justify-center gap-1 text-on-surface-variant">
-            <button class="btn-view-dte p-1 rounded hover:bg-surface-container hover:text-on-surface transition-colors" data-id="${f.id}" title="Ver Estructura DTE">
+            <button class="btn-view-dte p-1.5 rounded hover:bg-surface-container hover:text-on-surface transition-colors" data-id="${f.id}" title="Inspeccionar DTE Oficial">
               <span class="material-symbols-outlined text-[18px]">visibility</span>
             </button>
-            <button class="btn-print-dte p-1 rounded hover:bg-surface-container hover:text-on-surface transition-colors" data-id="${f.id}" title="Imprimir Ticket">
-              <span class="material-symbols-outlined text-[18px]">print</span>
+            <button class="btn-download-json p-1.5 rounded hover:bg-surface-container hover:text-secondary transition-colors" data-id="${f.id}" title="Descargar JSON Hacienda">
+              <span class="material-symbols-outlined text-[18px]">data_object</span>
             </button>
-            <button class="p-1 rounded hover:bg-surface-container hover:text-secondary transition-colors" title="Sync MH OK">
-              <span class="material-symbols-outlined text-[18px]">cloud_done</span>
-            </button>
+            ${
+              !isVoid
+                ? `<button class="btn-void-dte p-1.5 rounded hover:bg-error-container hover:text-error transition-colors" data-id="${f.id}" title="Anular DTE (Revertir Stock)">
+                    <span class="material-symbols-outlined text-[18px]">cancel</span>
+                  </button>`
+                : ''
+            }
           </div>
         </td>
       `;
 
       tr.querySelector('.btn-view-dte').addEventListener('click', () => openDteModal(f.id));
-      tr.querySelector('.btn-print-dte').addEventListener('click', () => {
-        openDteModal(f.id);
-        setTimeout(() => window.print(), 300);
-      });
+      tr.querySelector('.btn-download-json').addEventListener('click', () => downloadDteJson(f.id));
+
+      const voidBtn = tr.querySelector('.btn-void-dte');
+      if (voidBtn) {
+        voidBtn.addEventListener('click', () => confirmVoidDte(f.id));
+      }
 
       liveTransactionsTbody.appendChild(tr);
     });
 
     const showingText = document.getElementById('txShowingCount');
     if (showingText) {
-      showingText.innerHTML = `Mostrando <span class="font-semibold text-on-surface">${filtered.length}</span> de <span class="font-semibold text-on-surface">${facturas.length}</span> transacciones emitidas`;
+      showingText.innerHTML = `Mostrando <span class="font-semibold text-on-surface">${filtered.length}</span> de <span class="font-semibold text-on-surface">${facturas.length}</span> comprobantes emitidos`;
     }
   }
 
@@ -212,29 +222,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const f = window.facturaDB.getFacturaById(facturaId);
     if (!f) return;
 
-    const cliente = window.facturaDB.getClienteById(f.cliente_id) || { nombre: f.cliente_nombre, dui_nit: f.cliente_doc };
-
     dteDetailContent.innerHTML = `
-      <div class="flex flex-col gap-4 text-xs font-mono">
+      <div id="dtePrintContainer" class="flex flex-col gap-4 text-xs font-mono">
         <div class="p-3 rounded-xl bg-secondary-container/20 border border-secondary/30 flex items-center justify-between">
           <div>
             <span class="text-secondary font-bold text-sm">${f.numero_dte}</span>
-            <div class="text-gray-600 font-sans mt-0.5">Emisión autorizada por Ministerio de Hacienda de El Salvador</div>
+            <div class="text-gray-600 font-sans mt-0.5">Homologado por Ministerio de Hacienda de El Salvador</div>
           </div>
-          <span class="px-2.5 py-1 rounded-full bg-secondary text-white font-bold text-[11px]">${f.estado_mh}</span>
+          <span class="px-2.5 py-1 rounded-full ${f.estado_mh.includes('Anulada') ? 'bg-red-600' : 'bg-secondary'} text-white font-bold text-[11px]">${f.estado_mh}</span>
         </div>
 
-        <div class="grid grid-cols-2 gap-3 bg-surface-container-low p-3 rounded-xl">
-          <div><strong>Código Generación (UUID):</strong><br><span class="text-gray-700">${f.codigo_generacion_uuid}</span></div>
-          <div><strong>Sello Recepción MH:</strong><br><span class="text-gray-700">${f.sello_recepcion_mh}</span></div>
+        <div class="grid grid-cols-2 gap-2 bg-surface-container-low p-3 rounded-xl">
+          <div><strong>Código Generación (UUID):</strong><br><span class="text-gray-700 text-[11px]">${f.codigo_generacion_uuid}</span></div>
+          <div><strong>Sello Recepción MH:</strong><br><span class="text-gray-700 text-[11px]">${f.sello_recepcion_mh}</span></div>
           <div><strong>Fecha / Hora:</strong><br><span class="text-gray-700">${new Date(f.fecha_hora).toLocaleString('es-SV')}</span></div>
           <div><strong>Método de Pago:</strong><br><span class="text-gray-700">${f.metodo_pago}</span></div>
-          <div><strong>Cliente Receptor:</strong><br><span class="text-gray-700 font-bold">${f.cliente_nombre}</span></div>
+          <div><strong>Receptor:</strong><br><span class="text-gray-700 font-bold">${f.cliente_nombre}</span></div>
           <div><strong>DUI / NIT Receptor:</strong><br><span class="text-gray-700">${f.cliente_doc}</span></div>
         </div>
 
         <div>
-          <h5 class="font-bold text-sm font-sans mb-1 text-on-surface">Detalle de Renglones Fiscales</h5>
+          <h5 class="font-bold text-xs font-sans mb-1 text-on-surface">Renglones Fiscales (Precios Históricos Congelados)</h5>
           <table class="w-full text-left border-collapse border border-outline-variant/30">
             <thead class="bg-surface-container">
               <tr>
@@ -272,10 +280,40 @@ document.addEventListener('DOMContentLoaded', () => {
             </tfoot>
           </table>
         </div>
+
+        <div class="flex items-center justify-between pt-2 border-t font-sans">
+          <button onclick="window.facturaDB.downloadFile(JSON.stringify(window.facturaDB.getDteJson(${f.id}), null, 2), '${f.numero_dte}.json', 'application/json')" class="px-3 py-1.5 bg-surface-container hover:bg-surface-container-high rounded-lg text-xs font-semibold flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">download</span> Descargar JSON Oficial MH
+          </button>
+          <button onclick="window.print()" class="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-semibold flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">print</span> Imprimir Copia Fiscal
+          </button>
+        </div>
       </div>
     `;
 
     dteDetailModal.classList.remove('hidden');
+  }
+
+  function downloadDteJson(id) {
+    const json = window.facturaDB.getDteJson(id);
+    if (!json) return;
+    window.facturaDB.downloadFile(JSON.stringify(json, null, 2), `DTE_${json.identificacion.numeroControl}.json`, 'application/json');
+    window.showToast(`Archivo JSON DTE descargado.`);
+  }
+
+  function confirmVoidDte(id) {
+    if (!confirm(`¿Está seguro de anular el DTE #${id}? Esta acción revertirá el inventario de los productos vendidos y registrará la invalidación ante el Ministerio de Hacienda.`)) {
+      return;
+    }
+
+    try {
+      const res = window.facturaDB.anularFactura(id);
+      window.showToast(`Comprobante ${res.factura.numero_dte} anulado con éxito. Se restituyó el stock.`, 'info');
+      refreshDashboard();
+    } catch (e) {
+      window.showToast(e.message, 'error');
+    }
   }
 
   if (btnCloseDteModal) {
@@ -286,7 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 5. Gráficas con Chart.js
   function renderCharts(facturas) {
-    // Si Chart.js está disponible
     if (typeof Chart === 'undefined') return;
 
     // Gráfica de Barras Semanal
@@ -295,13 +332,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const ctx = salesCanvas.getContext('2d');
       if (salesChartInstance) salesChartInstance.destroy();
 
-      // Calcular ventas de los últimos 7 días
-      const days = ['Lun 14', 'Mar 15', 'Mié 16', 'Jue 17', 'Vie 18', 'Sáb 19', 'Dom 20'];
-      const baseValues = [3210, 3640, 3890, 4120, 4829.50, 5400, 4200];
-      
-      // Sumar ventas reales al día de hoy (Viernes)
-      const totalHoy = facturas.reduce((acc, f) => acc + f.total, 0);
-      baseValues[4] = Math.max(4829.50, totalHoy);
+      const days = ['Lun 24', 'Mar 25', 'Mié 26', 'Jue 27', 'Vie 28 (Hoy)', 'Sáb 29', 'Dom 30'];
+      const facturasValidas = facturas.filter(f => !f.estado_mh.includes('Anulad'));
+      const totalHoy = facturasValidas.reduce((acc, f) => acc + f.total, 0);
+
+      const baseValues = [1850, 2400, 2190, 3120, Math.max(3850, totalHoy), 4200, 3400];
 
       salesChartInstance = new Chart(ctx, {
         type: 'bar',
@@ -324,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
             legend: { display: false },
             tooltip: {
               callbacks: {
-                label: (ctx) => `Venta: $${ctx.raw.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+                label: (ctx) => `Venta: $${ctx.raw.toLocaleString('en-US', { minimumFractionDigits: 2 })} USD`
               }
             }
           },
@@ -360,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
           datasets: [
             {
               data: Object.values(catCount),
-              backgroundColor: ['#006c4a', '#131b2e', '#497cff', '#bec6e0', '#82f5c1', '#d3e4fe'],
+              backgroundColor: ['#006c4a', '#131b2e', '#497cff', '#bec6e0', '#82f5c1', '#f59e0b'],
               borderWidth: 2,
               borderColor: '#ffffff'
             }

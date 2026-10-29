@@ -30,11 +30,10 @@
   <header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] no-print">
     <div class="h-16 w-full px-gutter-desktop flex items-center justify-between gap-space-md">
       <!-- Sección Izquierda Logo y Navegación de Roles -->
-      <div class="flex items-center gap-space-md min-w-max">
+      <div class="flex items-center gap-space-md flex-1 min-w-0">
         <div class="flex items-center gap-space-sm cursor-pointer" onclick="window.location.href='index.html'">
           <div class="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-white font-bold font-headline-md text-lg">FF</div>
           <span class="font-headline-md text-headline-md tracking-tight text-on-surface">FacturaFácil</span>
-          <span class="bg-surface-container-high text-on-surface font-label-sm text-label-sm uppercase px-space-xs py-0.5 rounded font-semibold">DTE SV</span>
         </div>
 
         <div class="h-6 w-[1px] bg-outline-variant/40 hidden xl:block"></div>
@@ -48,50 +47,24 @@
           <span class="material-symbols-outlined text-on-surface-variant text-[16px]">expand_more</span>
         </button>
 
-        <!-- Switch de Roles / Vistas -->
-        <div class="flex items-center bg-surface-container-low p-0.5 rounded-lg">
-          <a class="flex items-center gap-1 px-space-sm py-1 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" data-path="terminal-pos-caja-rapida" href="html/pos.html">
-            <span class="material-symbols-outlined text-[16px]">point_of_sale</span>
-            <span>Terminal POS</span>
-          </a>
-          <a class="flex items-center gap-1 px-space-sm py-1 rounded font-label-md text-label-md bg-secondary text-white font-semibold shadow-sm transition-all" data-path="dashboard-kpis" href="index.html">
-            <span class="material-symbols-outlined text-[16px]">admin_panel_settings</span>
-            <span>Panel Admin</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- Buscador e Indicador de Sincronización -->
+<!-- Buscador e Indicador de Sincronización -->
       <div class="flex items-center gap-space-md flex-1 max-w-xl mx-space-md hidden md:flex">
         <div class="relative w-full">
           <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
-          <input class="w-full h-9 pl-9 pr-space-md rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all" placeholder="Buscar reporte, folio DTE, producto o cliente..." type="text" />
-        </div>
-        <div class="flex items-center gap-1.5 px-space-sm py-1.5 rounded-full bg-secondary-container/40 text-secondary whitespace-nowrap">
-          <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-          <span class="font-label-sm text-label-sm font-semibold text-on-secondary-container">Hacienda DTE: Sync OK</span>
+          <input id="topGlobalSearchInput" class="w-full h-9 pl-9 pr-space-md rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all" placeholder="Buscar reporte, folio DTE, producto o cliente..." type="text" />
         </div>
       </div>
 
       <!-- Sección Derecha: Perfil Usuario Activo & Roles -->
       <div class="flex items-center gap-space-sm min-w-max justify-end">
         <div class="hidden lg:flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-surface-container-low font-label-sm text-label-sm text-on-surface">
-          <span class="material-symbols-outlined text-secondary text-[16px]">database</span>
-          <span class="font-semibold">Oracle SQL Activa</span>
         </div>
 
-        <a href="html/login.html" class="px-2.5 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container font-label-sm text-label-sm font-semibold text-on-surface transition-colors flex items-center gap-1" title="Cambiar de Usuario / Iniciar Sesión">
-          <span class="material-symbols-outlined text-[16px] text-secondary">switch_account</span>
-          <span class="hidden sm:inline">Cambiar Rol</span>
-        </a>
-
-        <div class="h-6 w-[1px] bg-outline-variant/40"></div>
-
-        <div class="flex items-center gap-space-sm pl-1 cursor-pointer" onclick="window.location.href='html/login.html'">
+        <div class="absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-space-sm pl-1 cursor-pointer" onclick="window.toggleUserMenu(this)" role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false">
+          <div class="h-6 w-[1px] bg-outline-variant/40"></div>
           <div class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-xs user-display-avatar">DS</div>
           <div class="hidden sm:block text-left">
             <div class="font-label-md text-label-md font-semibold text-on-surface leading-tight user-display-name">Diego Siliezar</div>
-            <div class="font-label-sm text-label-sm text-secondary font-medium leading-tight user-display-role">ADMIN / Propietario</div>
           </div>
         </div>
       </div>
@@ -104,26 +77,26 @@
       <div class="font-label-sm text-label-sm uppercase tracking-wider text-outline px-space-sm mb-space-sm">
         Operaciones &amp; Gestión
       </div>
-      <nav class="flex flex-col gap-1">
-        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="terminal-pos-caja-rapida" href="html/pos.html">
-          <span class="material-symbols-outlined text-[20px]">point_of_sale</span>
-          <span class="font-label-md text-label-md">Terminal POS (Caja Rápida)</span>
-        </a>
+<nav class="flex flex-col gap-1">
         <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg bg-secondary-container text-on-secondary-container font-semibold transition-all" data-path="dashboard-kpis" href="index.html">
           <span class="material-symbols-outlined text-[20px]">analytics</span>
-          <span class="font-label-md text-label-md">Dashboard &amp; KPIs</span>
+          <span class="font-label-md text-label-md">Dashboard & KPIs</span>
         </a>
         <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="catalogo-inventario" href="html/inventario.html">
           <span class="material-symbols-outlined text-[20px]">inventory_2</span>
-          <span class="font-label-md text-label-md">Catálogo &amp; Inventario</span>
+          <span class="font-label-md text-label-md">Catálogo & Inventario</span>
         </a>
         <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="facturas-dte-hacienda" href="html/facturas.html">
           <span class="material-symbols-outlined text-[20px]">receipt_long</span>
-          <span class="font-label-md text-label-md">Facturas &amp; DTE Hacienda</span>
+          <span class="font-label-md text-label-md">Facturas & DTE Hacienda</span>
         </a>
         <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="directorio-clientes" href="html/clientes.html">
           <span class="material-symbols-outlined text-[20px]">badge</span>
           <span class="font-label-md text-label-md">Directorio Clientes</span>
+        </a>
+        <a href="javascript:void(0)" onclick="window.logoutUser()" class="mt-4 flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-error hover:bg-error-container/30 transition-colors">
+          <span class="material-symbols-outlined text-[20px]">logout</span>
+          <span class="font-label-md text-label-md font-semibold">Cerrar Sesión</span>
         </a>
       </nav>
     </div>
@@ -150,21 +123,17 @@
             <div class="flex flex-col gap-0.5">
               <div class="flex items-center gap-space-xs">
                 <span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Inteligencia Operativa SaaS</span>
-                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-                <span class="font-label-sm text-label-sm text-secondary font-semibold">En Vivo (Sync POS Activo)</span>
               </div>
               <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Dashboard Ejecutivo &amp; Analítica Fiscal</h1>
             </div>
 
-            <!-- Filtros y Acciones Globales -->
+<!-- Filtros y Acciones Globales -->
             <div class="flex flex-wrap items-center gap-space-sm">
-              <div class="bg-surface-container p-1 rounded-xl flex items-center shadow-sm">
-                <button class="px-space-sm py-1.5 rounded-lg text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors">Hoy</button>
-                <button class="px-space-sm py-1.5 rounded-lg text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-colors">Esta Semana</button>
-                <button class="px-space-sm py-1.5 rounded-lg bg-surface-container-lowest text-on-surface font-semibold shadow-sm font-label-md text-label-md transition-all">Mes Actual</button>
-              </div>
+              <button onclick="window.facturaDB.exportLibroVentasCSV()" class="h-10 px-space-md bg-surface-container-low hover:bg-surface-container text-on-surface rounded-xl font-label-md text-label-md font-semibold transition-all flex items-center gap-space-xs shadow-sm border border-outline-variant/30" title="Exportar todas las facturas y DTE a CSV/Excel">
+                <span class="material-symbols-outlined text-[18px] text-secondary">table_view</span>
+                <span>Exportar Libro Ventas (CSV)</span>
+              </button>
 
-              <!-- Selector de Sucursal -->
               <div class="relative">
                 <button class="h-10 px-space-md bg-surface-container-lowest rounded-xl shadow-sm text-on-surface font-label-md text-label-md flex items-center gap-space-xs hover:bg-surface-container-low transition-colors" id="branchSelectBtn">
                   <span class="material-symbols-outlined text-[18px] text-secondary">storefront</span>
@@ -172,12 +141,6 @@
                   <span class="material-symbols-outlined text-[18px] text-outline">expand_more</span>
                 </button>
               </div>
-
-              <!-- Botón Ir a Terminal POS -->
-              <a href="html/pos.html" class="h-10 px-space-md bg-secondary text-white rounded-xl font-label-md text-label-md font-semibold shadow-sm hover:bg-[#00583b] transition-all flex items-center gap-space-xs">
-                <span class="material-symbols-outlined text-[18px]">point_of_sale</span>
-                <span>Abrir Terminal de Ventas</span>
-              </a>
             </div>
           </div>
 
@@ -336,9 +299,7 @@
             <div class="p-space-md sm:p-space-lg flex flex-col md:flex-row md:items-center justify-between gap-space-md bg-surface-container-lowest">
               <div>
                 <div class="flex items-center gap-space-xs">
-                  <h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Últimas Transacciones en Vivo (DTE)</h2>
-                  <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-                  <span class="font-label-sm text-label-sm text-secondary font-semibold">API MH El Salvador</span>
+                  <h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Últimas Transacciones</h2>
                 </div>
                 <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Auditoría en tiempo real de Documentos Tributarios Electrónicos (DTE)</p>
               </div>
@@ -366,17 +327,17 @@
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider h-10">
-                    <th class="px-space-md font-semibold">Folio DTE / Código Gen</th>
+                    <th class="px-space-md font-semibold">Código Gen</th>
                     <th class="px-space-md font-semibold">Hora</th>
-                    <th class="px-space-md font-semibold">Receptor / Cliente</th>
-                    <th class="px-space-md font-semibold">Tipo DTE</th>
-                    <th class="px-space-md font-semibold text-right">Monto Total</th>
-                    <th class="px-space-md font-semibold">Método de Pago</th>
-                    <th class="px-space-md font-semibold">Estado Hacienda</th>
+                    <th class="px-space-md font-semibold">Receptor</th>
+                    <th class="px-space-md font-semibold">Tipo</th>
+                    <th class="px-space-md font-semibold text-right">Total</th>
+                    <th class="px-space-md font-semibold">Pago</th>
+                    <th class="px-space-md font-semibold">Estado</th>
                     <th class="px-space-md font-semibold text-center">Acciones</th>
                   </tr>
                 </thead>
-                <tbody id="liveTransactionsTbody" class="divide-y divide-transparent font-body-sm text-body-sm text-on-surface">
+                <tbody id="liveTransactionsTbody" class="divide-y divide-outline-variant/20 font-body-sm text-body-sm text-on-surface">
                 </tbody>
               </table>
             </div>
@@ -416,6 +377,17 @@
 
   <!-- Script del Dashboard Ejecutivo -->
   <script src="js/dashboard.js"></script>
+  <script>
+    // Conectar el buscador superior con el filtro de transacciones
+    const topSearch = document.getElementById('topGlobalSearchInput');
+    const txInput = document.getElementById('txSearchInput');
+    if (topSearch && txInput) {
+      topSearch.addEventListener('input', (e) => {
+        txInput.value = e.target.value;
+        txInput.dispatchEvent(new Event('input'));
+      });
+    }
+  </script>
 </body>
 
 </html>

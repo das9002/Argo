@@ -29,7 +29,14 @@
   background: rgba(118, 119, 125, 0.45);
 }
 
-/* Animaciones de Pasarela de Pago */
+/* Prevenir truncamiento de texto */
+.text-no-cut {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Animaciones y Efectos */
 @keyframes pulseGlow {
   0%, 100% {
     box-shadow: 0 0 0 0 rgba(0, 108, 74, 0.4);
@@ -59,28 +66,166 @@
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* Estilos de Impresión de Ticket Térmico DTE (80mm) */
+/* Texto seguro - sin truncamiento */
+.text-no-cut {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Íconos Material - tamaño asegurado */
+.material-symbols-outlined {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Tema oscuro persistente */
+html.dark body {
+  background-color: #0b1329 !important;
+  color: #e5e7eb !important;
+}
+
+html.dark .bg-surface,
+html.dark .bg-background,
+html.dark .bg-surface-container-lowest {
+  background-color: #111827 !important;
+}
+
+html.dark .bg-surface-container-low,
+html.dark .bg-surface-container {
+  background-color: #1f2937 !important;
+}
+
+html.dark .bg-surface-container-high,
+html.dark .bg-surface-container-highest {
+  background-color: #334155 !important;
+}
+
+html.dark .text-on-surface,
+html.dark .text-gray-700,
+html.dark .text-gray-600,
+html.dark .text-gray-500,
+html.dark .text-gray-400,
+html.dark .text-on-surface-variant {
+  color: #e5e7eb !important;
+}
+
+html.dark .text-outline,
+html.dark .text-gray-300 {
+  color: #aab4c4 !important;
+}
+
+html.dark .border-gray-100,
+html.dark .border-gray-200,
+html.dark .border-outline-variant\/30,
+html.dark .border-outline-variant\/40 {
+  border-color: #374151 !important;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #1f2937 !important;
+  color: #f3f4f6 !important;
+  border-color: #374151 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+html.dark table tbody tr:hover {
+  background-color: #1f2937 !important;
+}
+
+html.dark .glass-panel {
+  background: rgba(17, 24, 39, 0.9);
+}
+
+html.dark .login-light-panel {
+  background-color: #111827 !important;
+  color: #e5e7eb !important;
+}
+
+html.dark .login-light-panel .text-\[\#0b1c30\],
+html.dark .login-light-panel .text-gray-700,
+html.dark .login-light-panel .text-gray-500,
+html.dark .login-light-panel .text-gray-400 {
+  color: #e5e7eb !important;
+}
+
+html.dark .login-light-panel .border-gray-100,
+html.dark .login-light-panel .border-gray-200 {
+  border-color: #374151 !important;
+}
+
+html.dark .login-light-panel .theme-toggle {
+  border-color: #4b5563 !important;
+  color: #d1d5db !important;
+}
+
+html.dark .login-light-panel .theme-toggle:hover {
+  background-color: #1f2937 !important;
+}
+
+/* Estilos de Impresión de Ticket Térmico DTE (80mm / 58mm) */
 @media print {
-  body * {
-    visibility: hidden;
+  /* Ocultar elementos de navegación y pantalla */
+  header,
+  aside,
+  .no-print,
+  button,
+  nav,
+  input,
+  select {
+    display: none !important;
+    visibility: hidden !important;
   }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Si está abierto el ticket térmico del POS */
   #thermalTicketPrintArea,
   #thermalTicketPrintArea * {
-    visibility: visible;
+    visibility: visible !important;
   }
+
   #thermalTicketPrintArea {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 80mm;
-    margin: 0;
-    padding: 4mm;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 11px;
-    color: #000;
-    background: #fff;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 80mm !important;
+    max-width: 80mm !important;
+    margin: 0 !important;
+    padding: 2mm 3mm !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 11px !important;
+    line-height: 1.25 !important;
+    color: #000 !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    border: none !important;
   }
-  header, aside, .no-print {
-    display: none !important;
+
+  /* Si se imprime desde el modal DTE */
+  #dtePrintContainer,
+  #dtePrintContainer * {
+    visibility: visible !important;
+  }
+
+  #dtePrintContainer {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 80mm !important;
+    padding: 3mm !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    color: #000 !important;
   }
 }

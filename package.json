@@ -1,0 +1,23 @@
+{
+  "name": "facturafacil-pos-dte",
+  "version": "1.0.4",
+  "description": "Sistema de Punto de Venta (POS) & Facturación Electrónica DTE Homologado con Analítica Comercial para El Salvador",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "pos",
+    "facturacion-electronica",
+    "dte",
+    "el-salvador",
+    "ministerio-de-hacienda",
+    "kpis",
+    "oracle-sql",
+    "inventario"
+  ],
+  "author": "Diego Siliezar",
+  "license": "Proprietary"
+}
+

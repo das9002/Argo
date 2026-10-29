@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full">
 
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>FacturaFácil POS - Iniciar Sesión</title>
+  <title>FacturaFácil POS - Portal de Acceso Empresarial</title>
 
   <!-- Fuentes e Iconos -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
@@ -21,132 +21,199 @@
   <script src="../js/db.js"></script>
 </head>
 
-<body class="bg-[#f8f9ff] font-body-md text-[#0b1c30] antialiased min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-  <!-- Fondo Decorativo -->
-  <div class="absolute -top-32 -left-32 w-96 h-96 bg-[#006c4a]/10 rounded-full blur-3xl pointer-events-none"></div>
-  <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-[#131b2e]/10 rounded-full blur-3xl pointer-events-none"></div>
+<body class="bg-[#0b1329] font-body-md text-[#0b1c30] antialiased min-h-screen flex flex-col lg:flex-row overflow-x-hidden selection:bg-[#006c4a] selection:text-white">
 
-  <!-- Contenedor Principal -->
-  <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden relative z-10 flex flex-col">
-    <!-- Header del Card -->
-    <div class="bg-[#131b2e] p-8 text-white text-center flex flex-col items-center relative">
-      <div class="w-14 h-14 rounded-2xl bg-[#006c4a] flex items-center justify-center text-white font-bold font-headline-lg text-2xl shadow-lg mb-3">
-        FF
-      </div>
-      <h1 class="font-headline-lg text-2xl font-bold tracking-tight">FacturaFácil POS</h1>
-      <p class="text-xs text-gray-300 mt-1 font-medium">Facturación Electrónica DTE &amp; Analítica Comercial (El Salvador)</p>
+  <!-- ========================================================= -->
+  <!-- SECCIÓN IZQUIERDA: PRESENTACIÓN CORPORATIVA & TELEMETRÍA (DESKTOP) -->
+  <!-- ========================================================= -->
+  <section class="lg:w-[58%] xl:w-[60%] bg-[#080e1f] text-white p-8 lg:p-14 xl:p-20 flex flex-col justify-between relative overflow-hidden border-b lg:border-b-0 lg:border-r border-[#1a2542]">
+    <!-- Efectos de iluminación sutiles en fondo -->
+    <div class="absolute -top-40 -left-40 w-[600px] h-[600px] bg-[#006c4a]/20 rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute -bottom-40 -right-40 w-[500px] h-[500px] bg-[#234580]/25 rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(#1f2e52_1px,transparent_1px)] [background-size:24px_24px] opacity-25 pointer-events-none"></div>
 
-      <span class="mt-3 px-3 py-1 rounded-full bg-[#006c4a]/30 border border-[#006c4a]/50 text-[#85f8c4] font-label-sm text-[11px] font-semibold flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-[#85f8c4] animate-pulse"></span>
-        API Ministerio de Hacienda Conectado
-      </span>
-    </div>
-
-    <!-- Formulario de Inicio de Sesión -->
-    <div class="p-8 flex flex-col gap-6">
-      <div class="text-center">
-        <h2 class="text-xl font-bold text-[#0b1c30]">Iniciar Sesión en el Sistema</h2>
-        <p class="text-xs text-gray-500 mt-1">Selecciona o ingresa tu usuario para acceder al panel o terminal POS</p>
-      </div>
-
-      <!-- Selector de Rol Rápidos para Demostración -->
-      <div class="flex flex-col gap-2">
-        <label class="text-xs font-bold uppercase tracking-wider text-gray-400">Acceso Rápido Demo (Roles):</label>
-        <div class="grid grid-cols-2 gap-2">
-          <button id="btnSelectAdmin" type="button" class="p-3 rounded-xl border-2 border-[#006c4a] bg-[#006c4a]/10 hover:bg-[#006c4a]/20 transition-all text-left flex flex-col gap-0.5">
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-xs text-[#006c4a]">Rol: ADMIN</span>
-              <span class="material-symbols-outlined text-[16px] text-[#006c4a]">admin_panel_settings</span>
-            </div>
-            <span class="text-[11px] font-semibold text-gray-700">Diego Siliezar</span>
-            <span class="text-[10px] text-gray-500">Pass: 123</span>
-          </button>
-
-          <button id="btnSelectCajero" type="button" class="p-3 rounded-xl border border-gray-200 hover:border-[#006c4a] hover:bg-gray-50 transition-all text-left flex flex-col gap-0.5">
-            <div class="flex items-center justify-between">
-              <span class="font-bold text-xs text-gray-700">Rol: CAJERO</span>
-              <span class="material-symbols-outlined text-[16px] text-gray-500">point_of_sale</span>
-            </div>
-            <span class="text-[11px] font-semibold text-gray-700">Carlos Mendoza</span>
-            <span class="text-[10px] text-gray-500">Pass: 123</span>
-          </button>
+    <!-- Header de Marca -->
+    <div class="relative z-10 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#006c4a] to-[#00a874] flex items-center justify-center text-white font-bold font-headline-lg text-2xl shadow-lg shadow-[#006c4a]/30">
+          FF
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-headline-lg text-2xl font-bold tracking-tight text-white">FacturaFácil</span>
+            <span class="px-2 py-0.5 rounded-md bg-[#006c4a]/30 border border-[#006c4a]/60 text-[#85f8c4] font-mono text-[11px] font-bold">POS &amp; DTE</span>
+          </div>
+          <p class="text-xs text-gray-400 font-medium">Plataforma Empresarial de Facturación &amp; Punto de Venta</p>
         </div>
       </div>
 
+    </div>
+
+    <!-- Contenido Hero Principal (Desktop) -->
+    <div class="relative z-10 my-10 lg:my-0 max-w-2xl flex flex-col gap-8">
+      <div class="flex flex-col gap-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#006c4a]/20 border border-[#006c4a]/40 text-[#85f8c4] text-xs font-semibold w-fit">
+          <span class="material-symbols-outlined text-[16px]">verified</span>
+          Sistema Certificado conforme a Ley de Emisión DTE
+        </div>
+        <h1 class="font-headline-lg text-3xl lg:text-4xl xl:text-5xl font-extrabold text-white tracking-tight leading-[1.15]">
+          Control Integral de Ventas, Inventario y Facturación Electrónica
+        </h1>
+        <p class="text-sm lg:text-base text-gray-300 leading-relaxed font-normal">
+          Arquitectura robusta con control estricto de roles. La operación en caja se mantiene ágil y aislada, mientras la administración financiera, costos, márgenes y reportes ejecutivos quedan 100% protegidos.
+        </p>
+      </div>
+
+      <!-- Tarjetas de Características Clave para Compradores -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+        <div class="p-4 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm flex flex-col gap-2 hover:bg-white/[0.07] transition-all">
+          <div class="w-9 h-9 rounded-xl bg-[#006c4a]/30 flex items-center justify-center text-[#85f8c4]">
+            <span class="material-symbols-outlined text-[20px]">security</span>
+          </div>
+          <h3 class="font-bold text-sm text-white">Seguridad RBAC</h3>
+          <p class="text-xs text-gray-400 leading-snug">Separación infranqueable entre cajeros operativos y auditoría financiera de dueños.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm flex flex-col gap-2 hover:bg-white/[0.07] transition-all">
+          <div class="w-9 h-9 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
+            <span class="material-symbols-outlined text-[20px]">qr_code_2</span>
+          </div>
+          <h3 class="font-bold text-sm text-white">DTE &amp; QR Legal</h3>
+          <p class="text-xs text-gray-400 leading-snug">Generación instantánea de UUIDs v4, sellos criptográficos e impresión térmica de 80mm.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm flex flex-col gap-2 hover:bg-white/[0.07] transition-all">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+            <span class="material-symbols-outlined text-[20px]">database</span>
+          </div>
+          <h3 class="font-bold text-sm text-white">Oracle SQL Ready</h3>
+          <p class="text-xs text-gray-400 leading-snug">Persistencia relacional compatible con esquemas Oracle Enterprise y API REST.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Informativo -->
+    <div class="relative z-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-2">
+      <div>FacturaFácil POS &amp; Analytics v1.0.4 • El Salvador</div>
+      <div class="flex items-center gap-4 text-gray-300">
+        <span class="flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Servidor Local: Puerto 3000
+        </span>
+        <span>IVA Legal 13%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================= -->
+  <!-- SECCIÓN DERECHA: WORKSPACE DE LOGIN EMPRESARIAL (DESKTOP) -->
+  <!-- ========================================================= -->
+  <section class="login-light-panel relative lg:w-[42%] xl:w-[40%] bg-white p-8 sm:p-12 xl:p-16 flex flex-col justify-center items-center min-h-screen">
+    <button type="button" class="theme-toggle absolute top-5 right-5 inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 transition-colors" onclick="window.toggleDarkMode()" aria-label="Activar modo oscuro" aria-pressed="false">
+      <span class="material-symbols-outlined text-[18px] theme-toggle-icon">dark_mode</span>
+      <span class="text-xs font-semibold theme-toggle-label">Modo oscuro</span>
+    </button>
+    <div class="w-full max-w-lg flex flex-col gap-7">
+
+      <!-- Título del Formulario -->
+      <div>
+        <div class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-[#006c4a] mb-1">
+          <span class="material-symbols-outlined text-[16px]">lock</span>
+          Acceso Seguro al Sistema
+        </div>
+        <h2 class="font-headline-lg text-2xl lg:text-3xl font-extrabold text-[#0b1c30] tracking-tight">Iniciar Sesión</h2>
+        <p class="text-sm text-gray-500 mt-1">Ingresa con tus credenciales para continuar.</p>
+      </div>
+
+      <!-- Formulario de Credenciales -->
       <form id="loginForm" class="flex flex-col gap-4">
         <div class="flex flex-col gap-1.5">
           <label class="text-xs font-semibold text-gray-700">Nombre de Usuario</label>
           <div class="relative">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[18px]">person</span>
-            <input id="loginUsername" type="text" class="w-full h-11 pl-10 pr-4 rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-[#0b1c30] focus:outline-none focus:bg-white focus:border-[#006c4a] transition-all" placeholder="admin / cajero" value="admin" required />
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-[20px]">person</span>
+            <input id="loginUsername" type="text" minlength="3" maxlength="40" pattern="[A-Za-z0-9._-]+" autocomplete="username" class="w-full h-12 pl-11 pr-4 rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-[#0b1c30] focus:outline-none focus:bg-white focus:border-[#006c4a] focus:ring-2 focus:ring-[#006c4a]/20 transition-all" placeholder="Escribe tu usuario" required />
           </div>
         </div>
 
         <div class="flex flex-col gap-1.5">
-          <label class="text-xs font-semibold text-gray-700">Contraseña</label>
+          <label class="text-xs font-semibold text-gray-700 flex items-center justify-between">
+            <span>Contraseña</span>
+          </label>
           <div class="relative">
-            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[18px]">lock</span>
-            <input id="loginPassword" type="password" class="w-full h-11 pl-10 pr-4 rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-[#0b1c30] focus:outline-none focus:bg-white focus:border-[#006c4a] transition-all" placeholder="••••••••" value="123" required />
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-[20px]">lock</span>
+            <input id="loginPassword" type="password" minlength="3" maxlength="128" autocomplete="current-password" class="w-full h-12 pl-11 pr-11 rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-[#0b1c30] focus:outline-none focus:bg-white focus:border-[#006c4a] focus:ring-2 focus:ring-[#006c4a]/20 transition-all" placeholder="••••••••" required />
+            <button type="button" id="btnTogglePassword" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700">
+              <span class="material-symbols-outlined text-[20px]">visibility</span>
+            </button>
           </div>
         </div>
 
-        <button id="btnLoginSubmit" type="submit" class="w-full h-12 bg-[#006c4a] hover:bg-[#00583b] text-white font-bold rounded-xl shadow-lg shadow-[#006c4a]/30 active:scale-[0.99] transition-all flex items-center justify-center gap-2 mt-2">
+        <button id="btnLoginSubmit" type="submit" class="w-full h-13 py-3.5 bg-[#006c4a] hover:bg-[#00583b] text-white font-bold rounded-xl shadow-lg shadow-[#006c4a]/25 active:scale-[0.99] transition-all flex items-center justify-center gap-2 mt-2 text-sm tracking-wide">
           <span class="material-symbols-outlined text-[20px]">login</span>
           <span>INGRESAR AL SISTEMA</span>
         </button>
       </form>
-    </div>
 
-    <!-- Footer -->
-    <div class="p-4 bg-gray-50 border-t border-gray-100 text-center text-[11px] text-gray-500 flex flex-col gap-0.5">
-      <span>FacturaFácil POS &amp; Analytics v1.0.4 • El Salvador</span>
-      <span class="font-semibold text-[#006c4a]">Base de Datos Oracle SQL &amp; DTE 100% Homologado</span>
-    </div>
-  </div>
+      <!-- Nota de Seguridad y Privacidad -->
+      <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+        <span class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px] text-[#006c4a]">verified_user</span>
+          Control de acceso RBAC estricto
+        </span>
+        <span>Base de Datos Oracle &amp; Sync</span>
+      </div>
 
+    </div>
+  </section>
+
+  <!-- Script de Interacción -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const loginForm = document.getElementById('loginForm');
       const loginUsername = document.getElementById('loginUsername');
       const loginPassword = document.getElementById('loginPassword');
-      const btnSelectAdmin = document.getElementById('btnSelectAdmin');
-      const btnSelectCajero = document.getElementById('btnSelectCajero');
+      const btnTogglePassword = document.getElementById('btnTogglePassword');
+      const btnLoginSubmit = document.getElementById('btnLoginSubmit');
 
-      function selectQuickRole(role) {
-        if (role === 'admin') {
-          loginUsername.value = 'admin';
-          loginPassword.value = '123';
-          btnSelectAdmin.className = 'p-3 rounded-xl border-2 border-[#006c4a] bg-[#006c4a]/10 transition-all text-left flex flex-col gap-0.5';
-          btnSelectCajero.className = 'p-3 rounded-xl border border-gray-200 hover:border-[#006c4a] hover:bg-gray-50 transition-all text-left flex flex-col gap-0.5';
-        } else {
-          loginUsername.value = 'cajero';
-          loginPassword.value = '123';
-          btnSelectCajero.className = 'p-3 rounded-xl border-2 border-[#006c4a] bg-[#006c4a]/10 transition-all text-left flex flex-col gap-0.5';
-          btnSelectAdmin.className = 'p-3 rounded-xl border border-gray-200 hover:border-[#006c4a] hover:bg-gray-50 transition-all text-left flex flex-col gap-0.5';
-        }
-      }
+      btnTogglePassword.addEventListener('click', () => {
+        const isPass = loginPassword.type === 'password';
+        loginPassword.type = isPass ? 'text' : 'password';
+        btnTogglePassword.innerHTML = `<span class="material-symbols-outlined text-[20px]">${isPass ? 'visibility_off' : 'visibility'}</span>`;
+      });
 
-      btnSelectAdmin.addEventListener('click', () => selectQuickRole('admin'));
-      btnSelectCajero.addEventListener('click', () => selectQuickRole('cajero'));
-
-      loginForm.addEventListener('submit', (e) => {
+      loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const username = loginUsername.value.trim();
-        const password = loginPassword.value.trim();
+        const password = loginPassword.value;
 
-        const result = window.facturaDB.login(username, password);
-        if (result.success) {
-          window.showToast(`¡Bienvenido ${result.user.nombre_completo}! Acceso concedido como ${result.user.rol}`);
-          setTimeout(() => {
-            if (result.user.rol === 'CAJERO') {
-              window.location.href = 'pos.html';
-            } else {
-              window.location.href = '../index.html';
-            }
-          }, 600);
-        } else {
-          window.showToast(result.error, 'error');
-        }
+        btnLoginSubmit.disabled = true;
+        btnLoginSubmit.innerHTML = `
+          <span class="material-symbols-outlined text-[20px] animate-spin">refresh</span>
+          <span>Verificando credenciales...</span>
+        `;
+
+        setTimeout(async () => {
+          const result = await window.facturaDB.login(username, password);
+          if (result.success) {
+            window.showToast(`¡Bienvenido ${result.user.nombre_completo}! Acceso concedido como ${result.user.rol}`);
+            setTimeout(() => {
+              // SEPARACIÓN ESTRICTA DE ROLES:
+              // - CAJERO va directo y EXCLUSIVAMENTE a la Terminal POS
+              // - ADMIN va al Dashboard Ejecutivo de Control Total
+              if (result.user.rol === 'CAJERO') {
+                window.location.href = 'pos.html';
+              } else {
+                window.location.href = '../index.html';
+              }
+            }, 500);
+          } else {
+            window.showToast(result.error, 'error');
+            btnLoginSubmit.disabled = false;
+            btnLoginSubmit.innerHTML = `
+              <span class="material-symbols-outlined text-[20px]">login</span>
+              <span>INGRESAR AL SISTEMA</span>
+            `;
+          }
+        }, 400);
       });
     });
   </script>

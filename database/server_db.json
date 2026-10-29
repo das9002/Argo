@@ -3,33 +3,41 @@
     {
       "id": 1,
       "nombre_rol": "ADMIN",
-      "descripcion": "Administrador general del sistema con acceso total"
+      "descripcion": "Administrador General: Acceso total a reportes, auditoría DTE, finanzas, inventario y control de usuarios",
+      "permite_anular": true,
+      "permite_costos": true
     },
     {
       "id": 2,
       "nombre_rol": "CAJERO",
-      "descripcion": "Operador de terminal POS para emisión de ventas y DTE"
+      "descripcion": "Operador de Terminal POS: Ventas rápidas, emisión de DTEs, cobros multimoneda y registro de clientes",
+      "permite_anular": false,
+      "permite_costos": false
     }
   ],
   "usuarios": [
     {
       "id": 1,
       "username": "admin",
-      "password": "123",
+      "password": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
       "nombre_completo": "Diego Siliezar",
       "correo": "diego.admin@facturafacil.sv",
       "rol": "ADMIN",
       "rol_id": 1,
+      "cargo": "Administrador General / Propietario",
+      "sucursal": "Sucursal Escalón - San Salvador",
       "activo": true
     },
     {
       "id": 2,
       "username": "cajero",
-      "password": "123",
+      "password": "480e327adbdac392c564f1a117d05454fbccbf3b57ac3123165c00f854a2b589",
       "nombre_completo": "Carlos Mendoza",
       "correo": "carlos.mendoza@facturafacil.sv",
       "rol": "CAJERO",
       "rol_id": 2,
+      "cargo": "Cajero Principal / Terminal POS #02",
+      "sucursal": "Sucursal Escalón - San Salvador",
       "activo": true
     }
   ],
@@ -44,7 +52,7 @@
       "nrc": "",
       "limite_credito": 1500,
       "saldo_pendiente": 0,
-      "direccion": "Colonia Escalón, San Salvador"
+      "direccion": "Colonia Escalón, Pasaje 3 #12, San Salvador"
     },
     {
       "id": 2,
@@ -68,7 +76,7 @@
       "nrc": "",
       "limite_credito": 800,
       "saldo_pendiente": 0,
-      "direccion": "Santa Tecla, La Libertad"
+      "direccion": "Residencial Santa Teresa, Santa Tecla"
     },
     {
       "id": 4,
@@ -87,7 +95,8 @@
     {
       "id": 1,
       "sku": "LAP-DELL-I15",
-      "nombre": "Laptop Dell Inspiron 15",
+      "codigo_barra": "7501001234567",
+      "nombre": "Laptop Dell Inspiron 15 (Core i5, 16GB)",
       "categoria": "Computación",
       "precio_costo": 500,
       "margen_ganancia": 30,
@@ -99,19 +108,21 @@
     {
       "id": 2,
       "sku": "MOU-LOGI-W",
-      "nombre": "Mouse Inalámbrico Logitech",
+      "codigo_barra": "7501009876543",
+      "nombre": "Mouse Inalámbrico Logitech Ergonómico",
       "categoria": "Accesorios",
       "precio_costo": 15,
       "margen_ganancia": 66.67,
       "precio_venta": 25,
-      "stock": 49,
+      "stock": 50,
       "stock_minimo": 10,
       "imagen_url": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=300&q=80"
     },
     {
       "id": 3,
       "sku": "MON-ASUS-24",
-      "nombre": "Monitor ASUS 24 Pulgadas FHD",
+      "codigo_barra": "7501002468102",
+      "nombre": "Monitor ASUS 24 Pulgadas FHD IPS 75Hz",
       "categoria": "Monitores",
       "precio_costo": 130,
       "margen_ganancia": 42.3,
@@ -123,7 +134,8 @@
     {
       "id": 4,
       "sku": "TEC-MEC-RGB",
-      "nombre": "Teclado Mecánico RGB",
+      "codigo_barra": "7501001357911",
+      "nombre": "Teclado Mecánico RGB Redragon Switch Blue",
       "categoria": "Accesorios",
       "precio_costo": 28,
       "margen_ganancia": 60.7,
@@ -131,33 +143,41 @@
       "stock": 30,
       "stock_minimo": 8,
       "imagen_url": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "id": 5,
+      "sku": "IMP-POS-80MM",
+      "codigo_barra": "7501008080801",
+      "nombre": "Impresora Térmica POS 80mm USB + Bluetooth",
+      "categoria": "Hardware POS",
+      "precio_costo": 65,
+      "margen_ganancia": 38.46,
+      "precio_venta": 90,
+      "stock": 8,
+      "stock_minimo": 2,
+      "imagen_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "id": 6,
+      "sku": "LEC-BAR-HON",
+      "codigo_barra": "7501009998887",
+      "nombre": "Lector Láser Código de Barras 1D/2D QR USB",
+      "categoria": "Hardware POS",
+      "precio_costo": 35,
+      "margen_ganancia": 57.14,
+      "precio_venta": 55,
+      "stock": 12,
+      "stock_minimo": 4,
+      "imagen_url": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=300&q=80"
     }
   ],
   "facturas": [
     {
-      "id": 3,
-      "numero_dte": "DTE-01-M001-00004931",
-      "codigo_generacion_uuid": "BC165724-1888-4BD1-AFB5-150B3CF721DD",
-      "sello_recepcion_mh": "2026SVE20E1FD3C6A7E",
-      "fecha_hora": "2026-10-29T00:15:03.436Z",
-      "cliente_id": 1,
-      "cliente_nombre": "Juan Carlos Pérez",
-      "cliente_doc": "0614-250898-101-5",
-      "tipo_dte": "Factura (01)",
-      "subtotal": 22.12,
-      "iva": 2.88,
-      "total": 25,
-      "metodo_pago": "Efectivo",
-      "referencia_pago": "",
-      "estado_mh": "Transmitido con Éxito",
-      "cajero_responsable": "Carlos Mendoza"
-    },
-    {
       "id": 1,
-      "numero_dte": "DTE-01-M001-00000001",
+      "numero_dte": "DTE-01-M001-00004928",
       "codigo_generacion_uuid": "D4C2B7E1-891A-4C4D-B552-9A3FE18C0142",
       "sello_recepcion_mh": "2024E677F6702BB04481A01B73FE001428",
-      "fecha_hora": "2026-10-29T00:12:59.530Z",
+      "fecha_hora": "2026-10-28T16:42:10.000Z",
       "cliente_id": 1,
       "cliente_nombre": "Juan Carlos Pérez",
       "cliente_doc": "0614-250898-101-5",
@@ -172,10 +192,10 @@
     },
     {
       "id": 2,
-      "numero_dte": "DTE-01-M001-00000002",
+      "numero_dte": "DTE-01-M001-00004929",
       "codigo_generacion_uuid": "9B1F223A-C450-4F21-95E0-880F12AA5591",
       "sello_recepcion_mh": "2024B119C9031EA19208B12C88FF119201",
-      "fecha_hora": "2026-10-29T00:12:59.611Z",
+      "fecha_hora": "2026-10-28T17:15:20.000Z",
       "cliente_id": 2,
       "cliente_nombre": "Distribuidora El Sol S.A. de C.V.",
       "cliente_doc": "0614-121223-102-1",
@@ -216,23 +236,37 @@
       "precio_unitario_historico": 185,
       "subtotal": 327.43,
       "iva_linea": 42.57
-    },
-    {
-      "id": 4,
-      "factura_id": 3,
-      "producto_id": 2,
-      "cantidad": 1,
-      "precio_unitario_historico": 25,
-      "subtotal": 22.12,
-      "iva_linea": 2.88
     }
   ],
   "sessions": {
-    "token_admin_1793232870852": {
+    "bdfd46f036b9ca8774252135b1e16f7cd6b861a7a0d63aaf99d36e9f987501b0": {
       "user_id": 1,
       "username": "admin",
       "rol": "ADMIN",
-      "created_at": "2026-10-29T00:14:30.852Z"
+      "created_at": "2026-10-29T17:18:54.547Z",
+      "expires_at": "2026-10-30T01:18:54.547Z"
+    },
+    "842702d15fce446dbdbb286f8bdd68e76f37b68c3230066d259fdb2dec209f65": {
+      "user_id": 2,
+      "username": "cajero",
+      "rol": "CAJERO",
+      "created_at": "2026-10-29T17:19:06.914Z",
+      "expires_at": "2026-10-30T01:19:06.914Z"
+    },
+    "2b1523b05107a17a39b9748ffa725b2d3a50edbbfb6fc4ad4c2fe8eed340647c": {
+      "user_id": 1,
+      "username": "admin",
+      "rol": "ADMIN",
+      "created_at": "2026-10-29T17:20:15.666Z",
+      "expires_at": "2026-10-30T01:20:15.666Z"
+    },
+    "edda61cab9c2be60682dd0193ee909ff8a26b99c855aa0cf7405ed70a9494ed2": {
+      "user_id": 1,
+      "username": "admin",
+      "rol": "ADMIN",
+      "created_at": "2026-10-29T17:27:07.212Z",
+      "expires_at": "2026-10-30T01:27:07.207Z"
     }
-  }
+  },
+  "lastDteSequence": 4929
 }

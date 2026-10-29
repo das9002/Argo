@@ -8,10 +8,14 @@
   <title>FacturaFácil - Catálogo &amp; Inventario en Tiempo Real</title>
 
   <!-- Fuentes e Iconos -->
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet" />
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap"
+    rel="stylesheet" />
 
   <!-- Hoja de Estilos externa -->
   <link rel="stylesheet" href="../css/style.css" />
@@ -24,53 +28,44 @@
 
 <body class="bg-surface font-body-md text-on-surface antialiased">
   <!-- Encabezado Superior -->
-  <header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] no-print">
+  <header
+    class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] no-print">
     <div class="h-16 w-full px-gutter-desktop flex items-center justify-between gap-space-md">
       <div class="flex items-center gap-space-md min-w-max">
         <div class="flex items-center gap-space-sm cursor-pointer" onclick="window.location.href='../index.html'">
-          <div class="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-white font-bold font-headline-md text-lg">FF</div>
+          <div
+            class="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center text-white font-bold font-headline-md text-lg">
+            FF</div>
           <span class="font-headline-md text-headline-md tracking-tight text-on-surface">FacturaFácil</span>
-          <span class="bg-surface-container-high text-on-surface font-label-sm text-label-sm uppercase px-space-xs py-0.5 rounded font-semibold">DTE SV</span>
+          <span
+            class="bg-surface-container-high text-on-surface font-label-sm text-label-sm uppercase px-space-xs py-0.5 rounded font-semibold">DTE
+            SV</span>
         </div>
 
         <div class="h-6 w-[1px] bg-outline-variant/40 hidden xl:block"></div>
 
-        <div class="flex items-center bg-surface-container-low p-0.5 rounded-lg">
-          <a class="flex items-center gap-1 px-space-sm py-1 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" href="pos.html">
-            <span class="material-symbols-outlined text-[16px]">point_of_sale</span>
-            <span>Terminal POS</span>
-          </a>
-          <a class="flex items-center gap-1 px-space-sm py-1 rounded font-label-md text-label-md bg-secondary text-white font-semibold shadow-sm transition-all" href="../index.html">
-            <span class="material-symbols-outlined text-[16px]">admin_panel_settings</span>
-            <span>Panel Admin</span>
-          </a>
         </div>
-      </div>
 
       <div class="flex items-center gap-space-md flex-1 max-w-xl mx-space-md hidden md:flex">
         <div class="relative w-full">
-          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
-          <input id="invTopSearchInput" class="w-full h-9 pl-9 pr-space-md rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all" placeholder="Buscar por SKU, código o nombre en almacén..." type="text" />
-        </div>
-        <div class="flex items-center gap-1.5 px-space-sm py-1.5 rounded-full bg-secondary-container/40 text-secondary whitespace-nowrap">
-          <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-          <span class="font-label-sm text-label-sm font-semibold text-on-secondary-container">Stock Sincronizado</span>
+          <span
+            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+          <input id="invTopSearchInput"
+            class="w-full h-9 pl-9 pr-space-md rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all"
+            placeholder="Buscar por SKU, código o nombre en almacén..." type="text" />
         </div>
       </div>
 
       <div class="flex items-center gap-space-sm min-w-max justify-end">
-        <a href="login.html" class="px-2.5 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container font-label-sm text-label-sm font-semibold text-on-surface transition-colors flex items-center gap-1" title="Cambiar de Usuario / Iniciar Sesión">
-          <span class="material-symbols-outlined text-[16px] text-secondary">switch_account</span>
-          <span class="hidden sm:inline">Cambiar Rol</span>
-        </a>
-
         <div class="h-6 w-[1px] bg-outline-variant/40"></div>
 
-        <div class="flex items-center gap-space-sm pl-1 cursor-pointer" onclick="window.location.href='login.html'">
-          <div class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-xs user-display-avatar">DS</div>
+        <div class="flex items-center gap-space-sm pl-1 cursor-pointer" onclick="window.toggleUserMenu(this)" role="button" tabindex="0" aria-haspopup="menu" aria-expanded="false">
+          <div
+            class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-xs user-display-avatar">
+            DS</div>
           <div class="hidden sm:block text-left">
-            <div class="font-label-md text-label-md font-semibold text-on-surface leading-tight user-display-name">Diego Siliezar</div>
-            <div class="font-label-sm text-label-sm text-secondary font-medium leading-tight user-display-role">ADMIN / Inventario</div>
+            <div class="font-label-md text-label-md font-semibold text-on-surface leading-tight user-display-name">Diego
+              Siliezar</div>
           </div>
         </div>
       </div>
@@ -78,31 +73,46 @@
   </header>
 
   <!-- Sidebar Lateral -->
-  <aside class="fixed left-0 top-16 bottom-0 w-64 bg-surface-container-lowest z-40 flex flex-col justify-between py-space-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] no-print">
+  <aside
+    class="fixed left-0 top-16 bottom-0 w-64 bg-surface-container-lowest z-40 flex flex-col justify-between py-space-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] no-print">
     <div class="px-space-md flex-1">
-      <div class="font-label-sm text-label-sm uppercase tracking-wider text-outline px-space-sm mb-space-sm">Operaciones &amp; Gestión</div>
       <nav class="flex flex-col gap-1">
-        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="terminal-pos-caja-rapida" href="pos.html">
-          <span class="material-symbols-outlined text-[20px]">point_of_sale</span>
-          <span class="font-label-md text-label-md">Terminal POS (Caja Rápida)</span>
-        </a>
-        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard-kpis" href="../index.html">
+        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+          data-path="dashboard-kpis" href="../index.html">
           <span class="material-symbols-outlined text-[20px]">analytics</span>
-          <span class="font-label-md text-label-md">Dashboard &amp; KPIs</span>
+          <span class="font-label-md text-label-md">Dashboard & KPIs</span>
         </a>
-        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg bg-secondary-container text-on-secondary-container font-semibold transition-all" data-path="catalogo-inventario" href="inventario.html">
+        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg bg-secondary-container text-on-secondary-container font-semibold transition-all"
+          data-path="catalogo-inventario" href="inventario.html">
           <span class="material-symbols-outlined text-[20px]">inventory_2</span>
-          <span class="font-label-md text-label-md">Catálogo &amp; Inventario</span>
+          <span class="font-label-md text-label-md">Catálogo & Inventario</span>
         </a>
-        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="facturas-dte-hacienda" href="facturas.html">
+        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+          data-path="facturas-dte-hacienda" href="html/facturas.html">
           <span class="material-symbols-outlined text-[20px]">receipt_long</span>
-          <span class="font-label-md text-label-md">Facturas &amp; DTE Hacienda</span>
+          <span class="font-label-md text-label-md">Facturas & DTE Hacienda</span>
         </a>
-        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="directorio-clientes" href="clientes.html">
+        <a class="flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+          data-path="directorio-clientes" href="html/clientes.html">
           <span class="material-symbols-outlined text-[20px]">badge</span>
           <span class="font-label-md text-label-md">Directorio Clientes</span>
         </a>
+        <a href="javascript:void(0)" onclick="window.logoutUser()"
+          class="mt-4 flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg text-error hover:bg-error-container/30 transition-colors">
+          <span class="material-symbols-outlined text-[20px]">logout</span>
+          <span class="font-label-md text-label-md font-semibold">Cerrar Sesión</span>
+        </a>
       </nav>
+    </div>
+    <div class="px-space-md pt-space-sm">
+      <div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col gap-1">
+        <div class="flex items-center justify-between text-on-surface-variant">
+          <span class="font-label-sm text-label-sm font-semibold">Firma Electrónica MH</span>
+          <span class="material-symbols-outlined text-[14px] text-secondary">verified</span>
+        </div>
+        <div class="font-label-sm text-label-sm text-on-surface-variant">Certificado Válido (SV)</div>
+        <div class="font-label-sm text-label-sm text-outline">DTE API v1.04 - San Salvador</div>
+      </div>
     </div>
   </aside>
 
@@ -114,26 +124,29 @@
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
           <div class="flex flex-col gap-0.5">
             <div class="flex items-center gap-space-xs">
-              <span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Gestión de Existencias</span>
-              <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-              <span class="font-label-sm text-label-sm text-secondary font-semibold">Tasa IVA: 13% El Salvador</span>
+              <span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Gestión de
+                Existencias</span>
             </div>
-            <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Inventario y Catálogo de Productos</h1>
-            <p class="font-body-md text-body-md text-on-surface-variant">Sincronización en tiempo real con las ventas de la Terminal POS.</p>
+            <h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Inventario y Catálogo de
+              Productos</h1>
+            <p class="font-body-md text-body-md text-on-surface-variant">Sincronización en tiempo real con las ventas de
+              la Terminal POS.</p>
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm w-full lg:w-auto">
             <div class="flex flex-col p-3 rounded-xl bg-surface-container-lowest shadow-sm">
               <span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Total Ítems</span>
               <div class="flex items-baseline gap-1 mt-0.5">
-                <span id="metricTotalSkus" class="font-numeric-pos-md text-numeric-pos-md text-on-surface">0</span>
+                <span id="metricTotalSkus"
+                  class="font-numeric-pos-md text-numeric-pos-md text-on-surface font-bold">0</span>
                 <span class="font-label-sm text-label-sm text-on-surface-variant">SKUs</span>
               </div>
             </div>
             <div class="flex flex-col p-3 rounded-xl bg-surface-container-lowest shadow-sm">
-              <span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Valorización</span>
+              <span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Valorización Costo</span>
               <div class="flex items-baseline gap-1 mt-0.5">
-                <span id="metricValorizacion" class="font-numeric-pos-md text-numeric-pos-md text-secondary font-bold">$0.00</span>
+                <span id="metricValorizacion"
+                  class="font-numeric-pos-md text-numeric-pos-md text-secondary font-bold">$0.00</span>
               </div>
             </div>
             <div class="flex flex-col p-3 rounded-xl bg-surface-container-lowest shadow-sm">
@@ -142,7 +155,8 @@
                 <span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Stock Bajo</span>
               </div>
               <div class="flex items-baseline gap-1 mt-0.5">
-                <span id="metricStockBajo" class="font-numeric-pos-md text-numeric-pos-md text-amber-700 font-semibold">0</span>
+                <span id="metricStockBajo"
+                  class="font-numeric-pos-md text-numeric-pos-md text-amber-700 font-bold">0</span>
                 <span class="font-label-sm text-label-sm text-on-surface-variant">ítems</span>
               </div>
             </div>
@@ -152,38 +166,52 @@
                 <span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Agotados</span>
               </div>
               <div class="flex items-baseline gap-1 mt-0.5">
-                <span id="metricAgotados" class="font-numeric-pos-md text-numeric-pos-md text-error font-semibold">0</span>
+                <span id="metricAgotados" class="font-numeric-pos-md text-numeric-pos-md text-error font-bold">0</span>
                 <span class="font-label-sm text-label-sm text-on-surface-variant">ítems</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-space-md p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
+        <div
+          class="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-space-md p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
           <div class="flex flex-wrap items-center gap-space-sm flex-1">
             <div class="relative min-w-[280px] flex-1">
-              <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
-              <input id="invSearchInput" class="w-full h-10 pl-9 pr-3 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all" placeholder="Buscar por SKU, código o nombre..." type="text" />
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+              <input id="invSearchInput"
+                class="w-full h-10 pl-9 pr-3 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container transition-all"
+                placeholder="Buscar por SKU, código o nombre..." type="text" />
             </div>
             <div class="relative">
-              <select id="invCategoryFilter" class="h-10 pl-3 pr-8 rounded-lg bg-surface-container-low font-label-md text-label-md text-on-surface appearance-none focus:outline-none cursor-pointer">
+              <select id="invCategoryFilter"
+                class="h-10 pl-3 pr-8 rounded-lg bg-surface-container-low font-label-md text-label-md text-on-surface appearance-none focus:outline-none cursor-pointer">
                 <option value="all">Todas las Categorías</option>
               </select>
-              <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-[16px] pointer-events-none">expand_more</span>
+              <span
+                class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-[16px] pointer-events-none">expand_more</span>
             </div>
             <div class="relative">
-              <select id="invStockFilter" class="h-10 pl-3 pr-8 rounded-lg bg-surface-container-low font-label-md text-label-md text-on-surface appearance-none focus:outline-none cursor-pointer">
+              <select id="invStockFilter"
+                class="h-10 pl-3 pr-8 rounded-lg bg-surface-container-low font-label-md text-label-md text-on-surface appearance-none focus:outline-none cursor-pointer">
                 <option value="all">Todos los Estados</option>
                 <option value="in_stock">En Stock (Normal)</option>
                 <option value="low_stock">Stock Bajo (Alerta)</option>
                 <option value="out_of_stock">Agotado (0 uds)</option>
               </select>
-              <span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-[16px] pointer-events-none">expand_more</span>
+              <span
+                class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-[16px] pointer-events-none">expand_more</span>
             </div>
           </div>
 
-          <div class="flex items-center gap-space-sm">
-            <button id="btnOpenNewProduct" class="h-10 px-space-md bg-secondary text-white rounded-lg font-label-md text-label-md font-semibold hover:bg-[#00583b] transition-all flex items-center gap-1.5 shadow-sm">
+          <div class="flex items-center gap-space-sm flex-wrap">
+            <button id="btnExportInvCsv"
+              class="h-10 px-space-md bg-surface-container-low hover:bg-surface-container text-on-surface rounded-lg font-label-md text-label-md font-semibold transition-all flex items-center gap-1.5 shadow-sm border border-outline-variant/30">
+              <span class="material-symbols-outlined text-[18px] text-secondary">table_view</span>
+              <span>Exportar Excel (CSV)</span>
+            </button>
+            <button id="btnOpenNewProduct"
+              class="h-10 px-space-md bg-secondary text-white rounded-lg font-label-md text-label-md font-semibold hover:bg-[#00583b] transition-all flex items-center gap-1.5 shadow-sm">
               <span class="material-symbols-outlined text-[18px]">add_box</span>
               <span>+ Nuevo Producto</span>
             </button>
@@ -194,19 +222,21 @@
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
-                <tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider h-11">
+                <tr
+                  class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider h-11">
                   <th class="px-space-md">Producto</th>
-                  <th class="px-space-md">SKU / Código</th>
+                  <th class="px-space-md">Código</th>
                   <th class="px-space-md">Categoría</th>
-                  <th class="px-space-md text-right">Costo Base</th>
+                  <th class="px-space-md text-right">Costo</th>
                   <th class="px-space-md text-right">Margen</th>
-                  <th class="px-space-md text-right font-bold text-on-surface">Precio Venta (13% IVA)</th>
-                  <th class="px-space-md text-center">Stock Actual</th>
+                  <th class="px-space-md text-right font-bold text-on-surface">Precio</th>
+                  <th class="px-space-md text-center">Stock</th>
                   <th class="px-space-md">Estado</th>
                   <th class="px-space-md text-center">Acciones</th>
                 </tr>
               </thead>
-              <tbody id="inventoryTbody" class="divide-y divide-outline-variant/20 font-body-sm text-body-sm text-on-surface">
+              <tbody id="inventoryTbody"
+                class="divide-y divide-outline-variant/20 font-body-sm text-body-sm text-on-surface">
               </tbody>
             </table>
           </div>
@@ -218,79 +248,117 @@
 
   <!-- DRAWER PARA AGREGAR NUEVO PRODUCTO -->
   <div id="productDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
-    <div id="drawerBackdrop" class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity"></div>
-    <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" id="drawerBackdrop"></div>
+    <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex">
       <div class="w-screen max-w-md bg-surface-container-lowest shadow-2xl flex flex-col justify-between">
-        <div class="p-space-lg bg-surface-container-low border-b flex items-center justify-between">
+        <div class="p-space-lg border-b border-outline-variant/30 flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-secondary text-[24px]">add_circle</span>
-            <h3 class="font-headline-sm font-bold text-on-surface">Registrar Nuevo Producto</h3>
+            <span class="material-symbols-outlined text-secondary text-[24px]">inventory_2</span>
+            <h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Registrar Producto</h3>
           </div>
-          <button id="btnCloseDrawer" class="text-outline hover:text-on-surface">
+          <button id="btnCloseDrawer"
+            class="p-1.5 rounded-lg hover:bg-surface-container text-outline hover:text-on-surface">
             <span class="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
-        <form id="newProductForm" class="p-space-lg flex-1 overflow-y-auto flex flex-col gap-4">
+        <form id="newProductForm" class="flex-1 p-space-lg overflow-y-auto flex flex-col gap-4">
           <div class="flex flex-col gap-1">
-            <label class="font-label-sm text-on-surface-variant font-medium">Nombre del Producto *</label>
-            <input id="drawerName" class="h-10 px-3 rounded-lg bg-surface-container-low font-body-sm text-on-surface focus:outline-none" placeholder="Ej. Laptop Dell XPS 15" required />
-          </div>
-
-          <div class="flex flex-col gap-1">
-            <div class="flex items-center justify-between">
-              <label class="font-label-sm text-on-surface-variant font-medium">Código SKU / Barra *</label>
-              <button type="button" id="btnGenSku" class="text-xs text-secondary hover:underline font-semibold flex items-center gap-0.5">
-                <span class="material-symbols-outlined text-[14px]">autorenew</span> Autogenerar
-              </button>
-            </div>
-            <input id="drawerSku" class="h-10 px-3 rounded-lg bg-surface-container-low font-mono text-sm text-on-surface focus:outline-none" placeholder="SKU-891024" required />
-          </div>
-
-          <div class="flex flex-col gap-1">
-            <label class="font-label-sm text-on-surface-variant font-medium">Categoría *</label>
-            <input id="drawerCategory" class="h-10 px-3 rounded-lg bg-surface-container-low font-body-sm text-on-surface focus:outline-none" placeholder="Computación, Accesorios, Bebidas..." required />
-          </div>
-
-          <div class="p-3 rounded-xl bg-surface-container-low flex flex-col gap-3 border border-outline-variant/30">
-            <div class="font-label-sm font-semibold text-secondary uppercase tracking-wider">Cálculo Impositivo (IVA 13% El Salvador)</div>
-            <div class="grid grid-cols-2 gap-3">
-              <div class="flex flex-col gap-1">
-                <label class="font-label-sm text-on-surface-variant">Costo Base ($)</label>
-                <input id="drawerCost" type="number" step="0.01" class="h-10 px-3 rounded-lg bg-surface-container font-numeric-pos-md font-bold text-on-surface focus:outline-none" placeholder="10.00" value="10.00" required />
-              </div>
-              <div class="flex flex-col gap-1">
-                <label class="font-label-sm text-on-surface-variant">Margen Ganancia (%)</label>
-                <input id="drawerMargin" type="number" step="1" class="h-10 px-3 rounded-lg bg-surface-container font-numeric-pos-md font-bold text-on-surface focus:outline-none" placeholder="30" value="30" required />
-              </div>
-            </div>
-
-            <div class="flex flex-col gap-1 pt-1 border-t border-outline-variant/30">
-              <label class="font-label-sm text-on-surface-variant font-bold">Precio Final de Venta ($ IVA Incluido)</label>
-              <input id="drawerFinalPrice" type="number" step="0.01" class="h-11 px-3 rounded-lg bg-secondary-container/40 font-numeric-pos-lg text-lg font-bold text-on-secondary-container focus:outline-none" readonly />
-              <span class="text-[10px] text-outline">Fórmula: [Costo * (1 + Margen%)] * 1.13 (IVA SV)</span>
-            </div>
+            <label class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Nombre del Artículo
+              *</label>
+            <input id="drawerNombre"
+              class="h-11 px-3 rounded-xl bg-surface-container-low font-body-sm text-on-surface focus:outline-none focus:bg-surface-container"
+              placeholder="Ej. Impresora Térmica 80mm" minlength="3" maxlength="100" required aria-describedby="drawerNombreError" />
+            <span id="drawerNombreError" class="hidden text-xs font-semibold text-error"></span>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div class="flex flex-col gap-1">
-              <label class="font-label-sm text-on-surface-variant">Stock Inicial</label>
-              <input id="drawerStock" type="number" class="h-10 px-3 rounded-lg bg-surface-container-low font-body-sm text-on-surface focus:outline-none" placeholder="10" value="10" required />
+              <label class="font-label-sm text-label-sm text-on-surface-variant font-semibold">SKU / Código *</label>
+              <input id="drawerSku"
+                class="h-11 px-3 rounded-xl bg-surface-container-high font-mono text-sm text-on-surface uppercase focus:outline-none"
+                placeholder="Selecciona una categoría" minlength="2" maxlength="40" pattern="[A-Za-z0-9-]+" readonly required aria-describedby="drawerSkuError" />
+              <span id="drawerSkuError" class="hidden text-xs font-semibold text-error"></span>
             </div>
             <div class="flex flex-col gap-1">
-              <label class="font-label-sm text-on-surface-variant">Stock Mínimo (Alerta)</label>
-              <input id="drawerStockMin" type="number" class="h-10 px-3 rounded-lg bg-surface-container-low font-body-sm text-on-surface focus:outline-none" placeholder="4" value="4" required />
+              <label class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Código de Barras</label>
+              <input id="drawerCodigoBarra"
+                class="h-11 px-3 rounded-xl bg-surface-container-low font-mono text-sm text-on-surface focus:outline-none"
+                placeholder="7501001234567" maxlength="13" pattern="[0-9]{13}" inputmode="numeric" aria-describedby="drawerCodigoBarraError" />
+              <span id="drawerCodigoBarraError" class="hidden text-xs font-semibold text-error"></span>
             </div>
           </div>
 
           <div class="flex flex-col gap-1">
-            <label class="font-label-sm text-on-surface-variant">URL Imagen (Opcional)</label>
-            <input id="drawerImg" class="h-10 px-3 rounded-lg bg-surface-container-low font-body-sm text-on-surface focus:outline-none" placeholder="https://..." />
+            <label class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Categoría *</label>
+            <div id="drawerCategoryOptions" class="flex flex-wrap gap-2" role="group" aria-label="Categorías de producto">
+              <button type="button" class="category-pill px-3 py-1.5 rounded-full border border-outline-variant/50 text-sm text-on-surface-variant hover:bg-surface-container" data-category="Computación">Computación</button>
+              <button type="button" class="category-pill px-3 py-1.5 rounded-full border border-outline-variant/50 text-sm text-on-surface-variant hover:bg-surface-container" data-category="Accesorios">Accesorios</button>
+              <button type="button" class="category-pill px-3 py-1.5 rounded-full border border-outline-variant/50 text-sm text-on-surface-variant hover:bg-surface-container" data-category="Monitores">Monitores</button>
+              <button type="button" class="category-pill px-3 py-1.5 rounded-full border border-outline-variant/50 text-sm text-on-surface-variant hover:bg-surface-container" data-category="Hardware POS">Hardware POS</button>
+              <button type="button" class="category-pill px-3 py-1.5 rounded-full border border-outline-variant/50 text-sm text-on-surface-variant hover:bg-surface-container" data-category="Oficina">Oficina</button>
+            </div>
+            <input id="drawerCategoria" type="hidden" required aria-describedby="drawerCategoriaError" />
+            <span id="drawerCategoriaError" class="hidden text-xs font-semibold text-error"></span>
           </div>
 
-          <div class="p-space-md border-t flex items-center justify-end gap-2 mt-auto">
-            <button type="button" id="btnCancelDrawer" class="px-4 py-2 rounded-xl text-on-surface-variant font-label-md">Cancelar</button>
-            <button type="submit" id="btnSaveProduct" class="px-5 py-2 rounded-xl bg-secondary text-white font-label-md font-semibold hover:bg-[#00583b] shadow-sm">Guardar en Inventario</button>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex flex-col gap-1">
+              <label class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Costo ($ USD) *</label>
+              <input id="drawerCosto" type="number" min="0" max="100000000" step="0.01"
+                class="h-11 px-3 rounded-xl bg-surface-container-low font-numeric-pos-md text-on-surface focus:outline-none"
+                placeholder="50.00" required aria-describedby="drawerCostoError" />
+              <span id="drawerCostoError" class="hidden text-xs font-semibold text-error"></span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Margen (%) *</label>
+              <input id="drawerMargen" type="number" min="0" max="10000" step="0.01"
+                class="h-11 px-3 rounded-xl bg-surface-container-low font-numeric-pos-md text-on-surface focus:outline-none"
+                placeholder="30" value="30" max="99.99" required aria-describedby="drawerMargenError" />
+              <span id="drawerMargenError" class="hidden text-xs font-semibold text-error"></span>
+            </div>
+          </div>
+
+          <div
+            class="p-3 rounded-xl bg-secondary-container/20 border border-secondary/30 flex items-center justify-between">
+            <span class="text-xs font-semibold text-secondary">Precio de Venta Sugerido (con 13% IVA):</span>
+            <span id="drawerCalculatedPrice" class="font-numeric-pos-md text-base font-bold text-secondary">$0.00</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex flex-col gap-1">
+              <label class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Stock Inicial *</label>
+                <input id="drawerStock" type="number" min="0" max="100000" step="1"
+                class="h-11 px-3 rounded-xl bg-surface-container-low font-numeric-pos-md text-on-surface focus:outline-none"
+                placeholder="10" required aria-describedby="drawerStockError" />
+              <span id="drawerStockError" class="hidden text-xs font-semibold text-error"></span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Stock Mínimo
+                (Alerta)</label>
+                <input id="drawerStockMin" type="number" min="0" max="100000" step="1"
+                class="h-11 px-3 rounded-xl bg-surface-container-low font-numeric-pos-md text-on-surface focus:outline-none"
+                placeholder="3" value="3" required aria-describedby="drawerStockMinError" />
+              <span id="drawerStockMinError" class="hidden text-xs font-semibold text-error"></span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label class="font-label-sm text-label-sm text-on-surface-variant font-semibold">URL de Imagen</label>
+            <input id="drawerImagen"
+              class="h-11 px-3 rounded-xl bg-surface-container-low font-body-sm text-on-surface focus:outline-none"
+              placeholder="https://..."
+              value="https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=300&q=80"
+              type="url" aria-describedby="drawerImagenError" />
+            <span id="drawerImagenError" class="hidden text-xs font-semibold text-error"></span>
+          </div>
+
+          <div class="pt-4 border-t border-outline-variant/30 flex gap-2">
+            <button type="button" id="btnCancelDrawer"
+              class="flex-1 py-3 rounded-xl text-on-surface-variant font-semibold hover:bg-surface-container transition-colors">Cancelar</button>
+            <button id="btnSaveProduct" type="submit" disabled
+              class="flex-1 py-3 rounded-xl bg-secondary text-white font-bold shadow-md hover:bg-[#00583b] transition-all">Guardar
+              Producto</button>
           </div>
         </form>
       </div>
@@ -316,37 +384,137 @@
       const btnCancelDrawer = document.getElementById('btnCancelDrawer');
       const drawerBackdrop = document.getElementById('drawerBackdrop');
       const newProductForm = document.getElementById('newProductForm');
-
-      const drawerCost = document.getElementById('drawerCost');
-      const drawerMargin = document.getElementById('drawerMargin');
-      const drawerFinalPrice = document.getElementById('drawerFinalPrice');
-      const btnGenSku = document.getElementById('btnGenSku');
+      const btnExportInvCsv = document.getElementById('btnExportInvCsv');
+      const btnSaveProduct = document.getElementById('btnSaveProduct');
+      const drawerNombre = document.getElementById('drawerNombre');
       const drawerSku = document.getElementById('drawerSku');
+      const drawerCodigoBarra = document.getElementById('drawerCodigoBarra');
+      const drawerCategoria = document.getElementById('drawerCategoria');
+      const drawerStock = document.getElementById('drawerStock');
+      const drawerStockMin = document.getElementById('drawerStockMin');
+      const drawerImagen = document.getElementById('drawerImagen');
+      const categoryPills = document.querySelectorAll('.category-pill');
+      const categoryPrefixes = {
+        'Computación': 'CPT',
+        'Accesorios': 'ACC',
+        'Monitores': 'MON',
+        'Hardware POS': 'POS',
+        'Oficina': 'OFI'
+      };
 
-      function calculateDrawerPrice() {
-        const cost = parseFloat(drawerCost.value) || 0;
-        const margin = parseFloat(drawerMargin.value) || 0;
-        const priceBeforeTax = cost * (1 + margin / 100);
-        const finalPrice = priceBeforeTax * 1.13;
-        drawerFinalPrice.value = finalPrice.toFixed(2);
+      const drawerCosto = document.getElementById('drawerCosto');
+      const drawerMargen = document.getElementById('drawerMargen');
+      const drawerCalculatedPrice = document.getElementById('drawerCalculatedPrice');
+
+      if (btnExportInvCsv) {
+        btnExportInvCsv.addEventListener('click', () => {
+          window.facturaDB.exportInventarioCSV();
+          window.showToast("Catálogo valorizado exportado en formato CSV compatible con Excel.");
+        });
       }
 
-      drawerCost.addEventListener('input', calculateDrawerPrice);
-      drawerMargin.addEventListener('input', calculateDrawerPrice);
-      calculateDrawerPrice();
+      function updateCalculatedPrice() {
+        const costo = Number(drawerCosto.value);
+        const margen = Number(drawerMargen.value);
+        if (Number.isFinite(costo) && Number.isFinite(margen) && costo > 0 && margen >= 0 && margen < 100) {
+          const precioVenta = (costo / (1 - (margen / 100))) * 1.13;
+          drawerCalculatedPrice.textContent = `$${precioVenta.toFixed(2)} USD`;
+        } else {
+          drawerCalculatedPrice.textContent = '$0.00 USD';
+        }
+      }
 
-      btnGenSku.addEventListener('click', () => {
-        drawerSku.value = 'SKU-' + Math.floor(100000 + Math.random() * 900000);
+      function setFieldError(field, message, showErrors) {
+        const error = document.getElementById(`${field.id}Error`);
+        const invalid = Boolean(message);
+        field.classList.toggle('border-error', invalid && showErrors);
+        if (error) {
+          error.textContent = showErrors ? (message || '') : '';
+          error.classList.toggle('hidden', !showErrors || !message);
+        }
+        return !invalid;
+      }
+
+      function validateProductForm(showErrors = true) {
+        const nombre = drawerNombre.value.trim();
+        const sku = drawerSku.value.trim();
+        const codigoBarra = drawerCodigoBarra.value.trim();
+        const categoria = drawerCategoria.value.trim();
+        const costo = Number(drawerCosto.value);
+        const margen = Number(drawerMargen.value);
+        const stock = Number(drawerStock.value);
+        const stockMin = Number(drawerStockMin.value);
+        const imagen = drawerImagen.value.trim();
+        let valid = true;
+
+        valid = setFieldError(drawerNombre, nombre.length < 3 || nombre.length > 100 ? 'El nombre debe tener entre 3 y 100 caracteres.' : '', showErrors) && valid;
+        valid = setFieldError(drawerSku, !/^[A-Za-z0-9-]+$/.test(sku) ? 'Usa solo letras, números y guiones.' : '', showErrors) && valid;
+        valid = setFieldError(drawerCodigoBarra, codigoBarra && !/^\d{13}$/.test(codigoBarra) ? 'Debe contener exactamente 13 dígitos EAN-13.' : '', showErrors) && valid;
+        valid = setFieldError(drawerCategoria, !categoria ? 'Selecciona una categoría.' : '', showErrors) && valid;
+        valid = setFieldError(drawerCosto, !Number.isFinite(costo) || costo <= 0 ? 'El costo debe ser mayor que cero.' : '', showErrors) && valid;
+        valid = setFieldError(drawerMargen, !Number.isFinite(margen) || margen < 0 || margen >= 100 ? 'Usa un margen entre 0 y 99.99%.' : '', showErrors) && valid;
+        valid = setFieldError(drawerStock, !Number.isInteger(stock) || stock < 0 ? 'Debe ser un entero mayor o igual a cero.' : '', showErrors) && valid;
+        valid = setFieldError(drawerStockMin, !Number.isInteger(stockMin) || stockMin < 0 || (Number.isInteger(stock) && stockMin > stock) ? 'No puede superar el stock inicial.' : '', showErrors) && valid;
+
+        let validImage = true;
+        if (imagen) {
+          try {
+            const imageUrl = new URL(imagen);
+            validImage = imageUrl.protocol === 'http:' || imageUrl.protocol === 'https:';
+          } catch (error) {
+            validImage = false;
+          }
+        }
+        valid = setFieldError(drawerImagen, !validImage ? 'Introduce una URL válida (http o https).' : '', showErrors) && valid;
+        btnSaveProduct.disabled = !valid;
+        return valid;
+      }
+
+      function generateCategorySku(category) {
+        const prefix = categoryPrefixes[category];
+        if (!prefix) return '';
+        const products = window.facturaDB ? window.facturaDB.getProductos() : [];
+        const sequencePattern = new RegExp(`^${prefix}-(\\d+)$`, 'i');
+        const lastNumber = products.reduce((last, product) => {
+          const match = String(product.sku || '').match(sequencePattern);
+          return match ? Math.max(last, Number(match[1])) : last;
+        }, 0);
+        return `${prefix}-${String(lastNumber + 1).padStart(3, '0')}`;
+      }
+
+      categoryPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          categoryPills.forEach(item => item.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'font-semibold'));
+          pill.classList.add('bg-secondary-container', 'text-on-secondary-container', 'font-semibold');
+          drawerCategoria.value = pill.dataset.category;
+          drawerSku.value = generateCategorySku(pill.dataset.category);
+          validateProductForm(true);
+        });
       });
+
+      [drawerNombre, drawerSku, drawerCodigoBarra, drawerCosto, drawerMargen, drawerStock, drawerStockMin, drawerImagen].forEach(field => {
+        field.addEventListener('input', () => {
+          updateCalculatedPrice();
+          validateProductForm(true);
+        });
+      });
+
+      drawerCosto.addEventListener('input', updateCalculatedPrice);
+      drawerMargen.addEventListener('input', updateCalculatedPrice);
 
       function toggleDrawer(open) {
         if (open) {
           productDrawer.classList.remove('hidden');
-          document.getElementById('drawerName').focus();
+          document.getElementById('drawerNombre').focus();
         } else {
           productDrawer.classList.add('hidden');
           newProductForm.reset();
-          calculateDrawerPrice();
+          drawerCalculatedPrice.textContent = '$0.00 USD';
+          drawerCategoria.value = '';
+          drawerSku.value = '';
+          drawerSku.readOnly = true;
+          categoryPills.forEach(item => item.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'font-semibold'));
+          validateProductForm(false);
         }
       }
 
@@ -357,25 +525,29 @@
 
       newProductForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const nombre = document.getElementById('drawerName').value.trim();
-        const sku = drawerSku.value.trim();
-        const categoria = document.getElementById('drawerCategory').value.trim();
-        const costo = parseFloat(drawerCost.value);
-        const margen = parseFloat(drawerMargin.value);
-        const stock = parseInt(document.getElementById('drawerStock').value);
-        const stockMin = parseInt(document.getElementById('drawerStockMin').value);
-        const img = document.getElementById('drawerImg').value.trim();
+        if (!validateProductForm(true)) return;
+        const nombre = drawerNombre.value.trim();
+        const sku = drawerSku.value.trim().toUpperCase();
+        const codigo_barra = drawerCodigoBarra.value.trim();
+        const categoria = drawerCategoria.value.trim();
+        const costo = Number(drawerCosto.value);
+        const margen = Number(drawerMargen.value);
+        const stock = Number(drawerStock.value);
+        const stockMin = Number(drawerStockMin.value);
+        const imagen = drawerImagen.value.trim();
+        const precioVenta = (costo / (1 - (margen / 100))) * 1.13;
 
         window.facturaDB.addProducto({
           nombre,
           sku,
+          codigo_barra,
           categoria,
           precio_costo: costo,
           margen_ganancia: margen,
-          precio_venta: parseFloat(drawerFinalPrice.value),
+          precio_venta: parseFloat(precioVenta.toFixed(2)),
           stock,
           stock_minimo: stockMin,
-          imagen_url: img || 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=300&q=80'
+          imagen_url: imagen
         });
 
         toggleDrawer(false);
@@ -401,7 +573,10 @@
         });
 
         const filtered = prods.filter(p => {
-          const matchQuery = !query || p.nombre.toLowerCase().includes(query) || p.sku.toLowerCase().includes(query);
+          const matchQuery = !query ||
+            p.nombre.toLowerCase().includes(query) ||
+            p.sku.toLowerCase().includes(query) ||
+            (p.codigo_barra && p.codigo_barra.includes(query));
           const matchCat = catFilter === 'all' || p.categoria === catFilter;
           const matchStock = stockFilter === 'all' ||
             (stockFilter === 'in_stock' && p.stock > p.stock_minimo) ||
@@ -443,7 +618,7 @@
               <img src="${p.imagen_url}" alt="${p.nombre}" class="w-10 h-10 rounded-lg object-cover bg-surface-container" onerror="this.src='https://images.unsplash.com/photo-1526738549149-8e07eca6c147?auto=format&fit=crop&w=300&q=80'" />
               <div>
                 <div class="font-semibold text-on-surface">${p.nombre}</div>
-                <div class="font-label-sm text-xs text-outline">ID Oracle #${p.id}</div>
+                <div class="font-label-sm text-xs text-outline">${p.codigo_barra ? 'Barra: ' + p.codigo_barra : 'ID #' + p.id}</div>
               </div>
             </td>
             <td class="px-space-md py-3 font-mono text-xs font-semibold text-on-surface">${p.sku}</td>
@@ -457,17 +632,16 @@
               ${p.stock} <span class="text-xs font-normal text-outline">uds</span>
             </td>
             <td class="px-space-md py-3">
-              ${
-                isOut
-                  ? '<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-xs font-bold">Agotado (0)</span>'
-                  : isLow
-                  ? '<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-label-sm text-xs font-semibold animate-pulse">Stock Crítico</span>'
-                  : '<span class="px-2 py-0.5 rounded-full bg-secondary-container/50 text-secondary font-label-sm text-xs font-semibold">En Stock</span>'
-              }
+              ${isOut
+              ? '<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-xs font-bold">Agotado (0)</span>'
+              : isLow
+                ? '<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-label-sm text-xs font-semibold animate-pulse">Stock Crítico</span>'
+                : '<span class="px-2 py-0.5 rounded-full bg-secondary-container/50 text-secondary font-label-sm text-xs font-semibold">En Stock</span>'
+            }
             </td>
             <td class="px-space-md py-3 text-center">
               <div class="flex items-center justify-center gap-1">
-                <button class="btn-restock px-2 py-1 bg-surface-container hover:bg-secondary-container hover:text-on-secondary-container rounded font-label-sm text-xs font-semibold transition-colors" data-id="${p.id}" title="Reabastecer 10 unidades">
+                <button class="btn-restock px-2.5 py-1 bg-surface-container hover:bg-secondary-container hover:text-on-secondary-container rounded font-label-sm text-xs font-semibold transition-colors" data-id="${p.id}" title="Reabastecer 10 unidades">
                   +10 Stock
                 </button>
               </div>
@@ -475,8 +649,7 @@
           `;
 
           tr.querySelector('.btn-restock').addEventListener('click', () => {
-            p.stock += 10;
-            window.facturaDB.saveDatabase();
+            window.facturaDB.restockProducto(p.id, 10);
             renderInventory();
             window.showToast(`Se agregaron 10 unidades a "${p.nombre}". Nuevo stock: ${p.stock}`);
           });

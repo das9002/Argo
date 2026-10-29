@@ -2,6 +2,32 @@
  * FacturaFácil POS & Analytics - Configuración de Tailwind y Helpers Globales
  */
 
+const THEME_STORAGE_KEY = 'factura_facil_theme';
+
+function applyTheme(theme) {
+  const isDark = theme === 'dark';
+  document.documentElement.classList.toggle('dark', isDark);
+  document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+  localStorage.setItem(THEME_STORAGE_KEY, isDark ? 'dark' : 'light');
+  document.querySelectorAll('.theme-toggle').forEach(button => {
+    button.setAttribute('aria-pressed', String(isDark));
+    const icon = button.querySelector('.theme-toggle-icon');
+    const label = button.querySelector('.theme-toggle-label');
+    if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+    if (label) label.textContent = isDark ? 'Modo claro' : 'Modo oscuro';
+  });
+}
+
+const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+document.documentElement.dataset.theme = savedTheme === 'dark' ? 'dark' : 'light';
+
+window.toggleDarkMode = function() {
+  applyTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark');
+};
+
+document.addEventListener('DOMContentLoaded', () => applyTheme(savedTheme === 'dark' ? 'dark' : 'light'));
+
 // 1. Configuración de Tailwind CSS
 tailwind.config = {
   darkMode: "class",
@@ -95,8 +121,48 @@ tailwind.config = {
   }
 };
 
-// 2. Sistema de Notificaciones Toast
-window.showToast = function(message, type = 'success', duration = 3500) {
+// 2. Guardia de Enrutamiento Inmediato y Control RBAC Estricto
+(function enforceStrictRBAC() {
+  const currentPath = window.location.pathname;
+  const currentFile = currentPath.split('/').pop() || 'index.html';
+  const isLoginPage = currentFile === 'login.html';
+  const isInsideHtmlFolder = currentPath.includes('/html/') || currentPath.endsWith('/html');
+
+  function resolveNavUrl(destination) {
+    if (destination === 'index.html') {
+      return isInsideHtmlFolder ? '../index.html' : 'index.html';
+    }
+    if (destination === 'login.html') {
+      return isInsideHtmlFolder ? 'login.html' : 'html/login.html';
+    }
+    return isInsideHtmlFolder ? destination : `html/${destination}`;
+  }
+
+  // Leer sesión guardada en localStorage
+  let user = null;
+  try {
+    const raw = localStorage.getItem('factura_facil_active_user');
+    if (raw) user = JSON.parse(raw);
+  } catch (e) {}
+
+  // 1. Si no hay usuario y no estamos en login, redirigir a login
+  if (!user && !isLoginPage) {
+    window.location.replace(resolveNavUrl('login.html'));
+    return;
+  }
+
+  // 2. Aislamiento Estricto de Roles:
+  // Si el usuario es CAJERO, NUNCA puede entrar ni ver el panel de ADMIN (Dashboard, Inventario, Facturas, Clientes)
+  const adminRestrictedPages = ['index.html', '', 'inventario.html', 'facturas.html', 'clientes.html'];
+  if (user && user.rol === 'CAJERO' && adminRestrictedPages.includes(currentFile)) {
+    // Redirección inmediata a la Terminal POS
+    window.location.replace(resolveNavUrl('pos.html'));
+    return;
+  }
+})();
+
+// 3. Sistema de Notificaciones Toast
+window.showToast = function(message, type = 'success', duration = 3800) {
   let container = document.getElementById('toastContainer');
   if (!container) {
     container = document.createElement('div');
@@ -107,7 +173,7 @@ window.showToast = function(message, type = 'success', duration = 3500) {
 
   const toast = document.createElement('div');
   const icon = type === 'success' ? 'check_circle' : type === 'error' ? 'error' : 'info';
-  const bgColor = type === 'success' ? 'bg-[#006c4a] text-white' : type === 'error' ? 'bg-[#ba1a1a] text-white' : 'bg-[#0b1c30] text-white';
+  const bgColor = type === 'success' ? 'bg-[#006c4a] text-white' : type === 'error' ? 'bg-[#ba1a1a] text-white' : 'bg-[#131b2e] text-white';
 
   toast.className = `flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl font-label-md text-label-md ${bgColor} transform translate-y-4 opacity-0 transition-all duration-300 pointer-events-auto`;
   toast.innerHTML = `
@@ -129,11 +195,132 @@ window.showToast = function(message, type = 'success', duration = 3500) {
   }, duration);
 };
 
-// 3. Sistema de Enrutamiento Inteligente e Integración de Autenticación
+// 4. Helper Global de Cierre de Sesión Seguro
+window.logoutUser = function() {
+  if (window.facturaDB) {
+    window.facturaDB.logout();
+  } else {
+    localStorage.removeItem('factura_facil_active_user');
+    localStorage.removeItem('factura_facil_auth_token');
+  }
+  const isInsideHtml = window.location.pathname.includes('/html/');
+  window.location.href = isInsideHtml ? 'login.html' : 'html/login.html';
+};
+
+function escapeUserValue(value) {
+  return String(value || '').replace(/[&<>'"]/g, character => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;'
+  }[character]));
+}
+
+window.openUserSettings = function() {
+  let user = null;
+  if (window.facturaDB) {
+    user = window.facturaDB.getCurrentUser();
+  } else {
+    try {
+      user = JSON.parse(localStorage.getItem('factura_facil_active_user') || 'null');
+    } catch (error) {
+      user = null;
+    }
+  }
+  if (!user) return;
+
+  document.getElementById('userSettingsModal')?.remove();
+  const modal = document.createElement('div');
+  modal.id = 'userSettingsModal';
+  modal.className = 'fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4';
+  modal.innerHTML = `
+    <div class="w-full max-w-md rounded-2xl bg-surface-container-lowest p-space-lg shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="userSettingsTitle">
+      <div class="flex items-center justify-between mb-5">
+        <h2 id="userSettingsTitle" class="font-headline-md text-headline-md font-bold text-on-surface">Configuración</h2>
+        <button type="button" class="user-settings-close p-1 rounded-lg text-outline hover:bg-surface-container hover:text-on-surface" aria-label="Cerrar configuración">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center gap-3 p-3 rounded-xl bg-surface-container-low">
+          <div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center font-bold">${escapeUserValue((user.nombre_completo || user.username).split(' ').map(name => name[0]).join('').substring(0, 2).toUpperCase())}</div>
+          <div>
+            <div class="font-label-md font-semibold text-on-surface">${escapeUserValue(user.nombre_completo || user.username)}</div>
+            <div class="font-label-sm text-outline">${escapeUserValue(user.rol || '')}</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 gap-2 text-sm">
+          <div class="flex justify-between gap-4"><span class="text-outline">Usuario</span><strong class="text-on-surface">${escapeUserValue(user.username)}</strong></div>
+          <div class="flex justify-between gap-4"><span class="text-outline">Correo</span><strong class="text-on-surface">${escapeUserValue(user.correo || 'No registrado')}</strong></div>
+          <div class="flex justify-between gap-4"><span class="text-outline">Sucursal</span><strong class="text-on-surface text-right">${escapeUserValue(user.sucursal || 'No registrada')}</strong></div>
+        </div>
+      </div>
+      <button type="button" class="user-settings-close mt-6 w-full py-2.5 rounded-xl bg-secondary text-white font-semibold hover:bg-[#00583b]">Cerrar</button>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.querySelectorAll('.user-settings-close').forEach(button => button.addEventListener('click', () => modal.remove()));
+  modal.addEventListener('click', event => {
+    if (event.target === modal) modal.remove();
+  });
+};
+
+window.toggleUserMenu = function(trigger) {
+  const currentMenu = document.getElementById('userMenu');
+  if (currentMenu) {
+    currentMenu.remove();
+    trigger.setAttribute('aria-expanded', 'false');
+    return;
+  }
+
+  const menu = document.createElement('div');
+  const bounds = trigger.getBoundingClientRect();
+  menu.id = 'userMenu';
+  menu.className = 'fixed z-[9999] w-48 rounded-xl bg-surface-container-lowest p-1.5 shadow-xl border border-outline-variant/30';
+  menu.style.top = `${bounds.bottom + 8}px`;
+  menu.style.right = `${Math.max(12, window.innerWidth - bounds.right)}px`;
+  menu.setAttribute('role', 'menu');
+  menu.innerHTML = `
+    <button type="button" class="user-menu-settings w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-left text-on-surface hover:bg-surface-container" role="menuitem">
+      <span class="material-symbols-outlined text-[18px]">settings</span>
+      <span>Configuración</span>
+    </button>
+    <button type="button" class="theme-toggle user-menu-theme w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-left text-on-surface hover:bg-surface-container" role="menuitem" aria-pressed="false">
+      <span class="material-symbols-outlined text-[18px] theme-toggle-icon">dark_mode</span>
+      <span class="theme-toggle-label">Modo oscuro</span>
+    </button>
+    <button type="button" class="user-menu-logout w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-left text-error hover:bg-error-container/30" role="menuitem">
+      <span class="material-symbols-outlined text-[18px]">logout</span>
+      <span>Cerrar sesión</span>
+    </button>`;
+  document.body.appendChild(menu);
+  trigger.setAttribute('aria-expanded', 'true');
+  menu.querySelector('.user-menu-settings').addEventListener('click', () => {
+    menu.remove();
+    trigger.setAttribute('aria-expanded', 'false');
+    window.openUserSettings();
+  });
+  menu.querySelector('.user-menu-theme').addEventListener('click', () => {
+    window.toggleDarkMode();
+    menu.remove();
+    trigger.setAttribute('aria-expanded', 'false');
+  });
+  menu.querySelector('.user-menu-logout').addEventListener('click', () => window.logoutUser());
+  setTimeout(() => {
+    document.addEventListener('click', event => {
+      if (!menu.contains(event.target) && !trigger.contains(event.target)) {
+        menu.remove();
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    }, { once: true });
+  }, 0);
+};
+
+// 5. Inicialización de Navegación e Integración de UI según Rol
 document.addEventListener('DOMContentLoaded', () => {
   const currentPath = window.location.pathname;
   const currentFile = currentPath.split('/').pop() || 'index.html';
-  const isInsideHtmlFolder = currentPath.includes('/html/');
+  const isInsideHtmlFolder = currentPath.includes('/html/') || currentPath.endsWith('/html');
 
   function resolveNavUrl(destination) {
     if (destination === 'index.html') {
@@ -170,17 +357,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Renderizar información del usuario activo e indicador de rol
+  // Renderizar información del usuario activo y aplicar reglas estrictas de visibilidad RBAC
   function updateUIForActiveUser() {
-    if (!window.facturaDB) return;
-    const user = window.facturaDB.getCurrentUser();
+    let user = null;
+    if (window.facturaDB) {
+      user = window.facturaDB.getCurrentUser();
+    } else {
+      try {
+        user = JSON.parse(localStorage.getItem('factura_facil_active_user'));
+      } catch (e) {}
+    }
+
+    if (!user) return;
 
     // Actualizar nombre y rol en header
     const userDisplayNames = document.querySelectorAll('.user-display-name');
     userDisplayNames.forEach(el => el.textContent = user.nombre_completo || user.username);
 
     const userDisplayRoles = document.querySelectorAll('.user-display-role');
-    userDisplayRoles.forEach(el => el.textContent = `${user.rol} / ${user.cargo || 'Operador'}`);
+    userDisplayRoles.forEach(el => {
+      if (user.rol === 'ADMIN') {
+        el.textContent = user.cargo || 'Propietario';
+      } else {
+        el.textContent = user.rol;
+      }
+    });
 
     const userAvatars = document.querySelectorAll('.user-display-avatar');
     userAvatars.forEach(el => {
@@ -198,10 +399,24 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Control de Permisos por Rol (RBAC): si es Cajero en la página de Dashboard Admin, mostrar aviso o restringir
-    if (user.rol === 'CAJERO' && (currentFile === 'index.html' || currentFile === '')) {
-      const adminOnlyElements = document.querySelectorAll('.admin-only');
-      adminOnlyElements.forEach(el => el.classList.add('opacity-50', 'pointer-events-none'));
+    // Control de Permisos por Rol (RBAC):
+    // Si el usuario es CAJERO:
+    // Ocultar completamente todos los elementos destinados solo a administradores (.admin-only)
+    if (user.rol === 'CAJERO') {
+      document.querySelectorAll('.admin-only').forEach(el => {
+        el.style.display = 'none';
+      });
+      document.querySelectorAll('.cashier-only').forEach(el => {
+        el.style.display = '';
+      });
+    } else {
+      // Si es ADMIN, mostrar elementos de administrador
+      document.querySelectorAll('.admin-only').forEach(el => {
+        el.style.display = '';
+      });
+      document.querySelectorAll('.cashier-only').forEach(el => {
+        el.style.display = 'none';
+      });
     }
   }
 
