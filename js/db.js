@@ -1,274 +1,194 @@
 /**
  * FacturaFácil POS & Analytics - Motor de Base de Datos y Lógica de Negocio
- * Simulación relacional en cliente con persistencia en localStorage
- * Modelo de 4 tablas maestras (Oracle SQL schema):
- * 1. clientes
- * 2. productos
- * 3. facturas
- * 4. detalle_facturas
+ * Soporte Híbrido: API REST Backend + Fallback en localStorage
+ * Modelo con Autenticación y Control de Acceso Basado en Roles (RBAC):
+ * Roles:
+ * - ADMIN: Acceso total (Dashboard, KPIs, Inventario, Clientes, Facturas, Gestión de Usuarios)
+ * - CAJERO: Acceso a Terminal POS (Ventas Rápidas, Cobro, Emisión DTE)
  */
 
-const STORAGE_KEY = 'factura_facil_db_v1';
+const STORAGE_KEY = 'factura_facil_db_v2';
+const AUTH_KEY = 'factura_facil_auth_token';
+const USER_KEY = 'factura_facil_active_user';
 const TASA_IVA_SV = 0.13; // 13% IVA El Salvador
 
-// Datos iniciales de demostración contextualizados a El Salvador
-const DEFAULT_CLIENTES = [
+// Usuarios por defecto (Credenciales de Demostración)
+const DEFAULT_USERS = [
   {
     id: 1,
-    dui_nit: "0614-230910-102-1",
-    nombre: "Distribuidora Cuscatlán S.A. de C.V.",
-    telefono: "+503 2257-8900",
-    email: "contacto@cuscatlandist.com.sv",
-    direccion: "Alameda Roosevelt #234, San Salvador",
-    tipo_contribuyente: "Crédito Fiscal (CCF)",
-    nrc: "238910-4",
-    limite_credito: 10000.00,
-    saldo_pendiente: 1420.00
+    username: 'admin',
+    password: '123',
+    nombre_completo: 'Diego Siliezar',
+    correo: 'diego.admin@facturafacil.sv',
+    rol: 'ADMIN',
+    rol_id: 1,
+    cargo: 'ADMIN / Propietario',
+    sucursal: 'Sucursal Escalón - San Salvador'
   },
   {
     id: 2,
-    dui_nit: "04981123-9",
-    nombre: "Roberto Carlos Morales",
-    telefono: "+503 7812-4490",
-    email: "roberto.morales@gmail.com",
-    direccion: "Colonia Escalón, Pje. 4 #12, San Salvador",
+    username: 'cajero',
+    password: '123',
+    nombre_completo: 'Carlos Mendoza',
+    correo: 'carlos.mendoza@facturafacil.sv',
+    rol: 'CAJERO',
+    rol_id: 2,
+    cargo: 'Cajero / Terminal POS #02',
+    sucursal: 'Sucursal Escalón - San Salvador'
+  }
+];
+
+const DEFAULT_CLIENTES = [
+  {
+    id: 1,
+    nombre: "Juan Carlos Pérez",
+    dui_nit: "0614-250898-101-5",
+    email: "juan.perez@email.com",
+    telefono: "+503 7788-9900",
     tipo_contribuyente: "Consumidor Final",
     nrc: "",
     limite_credito: 1500.00,
-    saldo_pendiente: 0.00
+    saldo_pendiente: 0.00,
+    direccion: "Colonia Escalón, San Salvador"
+  },
+  {
+    id: 2,
+    nombre: "Distribuidora El Sol S.A. de C.V.",
+    dui_nit: "0614-121223-102-1",
+    email: "contacto@elsol.com",
+    telefono: "+503 2255-4433",
+    tipo_contribuyente: "Crédito Fiscal (CCF)",
+    nrc: "238910-4",
+    limite_credito: 10000.00,
+    saldo_pendiente: 1420.00,
+    direccion: "Alameda Roosevelt #234, San Salvador"
   },
   {
     id: 3,
-    dui_nit: "02334812-4",
-    nombre: "Marcela Rivas de Gómez",
-    telefono: "+503 7199-2384",
-    email: "marcela.rivas@yahoo.com",
-    direccion: "Residencial Santa Teresa, Santa Tecla",
+    nombre: "María Elena López",
+    dui_nit: "0501-100201-104-3",
+    email: "maria.lopez@email.com",
+    telefono: "+503 7122-3344",
     tipo_contribuyente: "Consumidor Final",
     nrc: "",
     limite_credito: 800.00,
-    saldo_pendiente: 0.00
+    saldo_pendiente: 0.00,
+    direccion: "Santa Tecla, La Libertad"
   },
   {
     id: 4,
-    dui_nit: "0614-110298-101-2",
-    nombre: "Soluciones Tecnológicas SV, S.A.",
-    telefono: "+503 2288-4400",
-    email: "facturacion@solucionestech.sv",
-    direccion: "Blvd. Los Próceres #88, Antiguo Cuscatlán",
-    tipo_contribuyente: "Gran Contribuyente",
-    nrc: "189402-1",
-    limite_credito: 25000.00,
-    saldo_pendiente: 5200.00
-  },
-  {
-    id: 5,
-    dui_nit: "00000000-0",
     nombre: "Cliente Final Mostrador",
-    telefono: "+503 2200-0000",
+    dui_nit: "00000000-0",
     email: "cliente.final@facturafacil.sv",
-    direccion: "San Salvador, El Salvador",
+    telefono: "+503 2200-0000",
     tipo_contribuyente: "Consumidor Final",
     nrc: "",
     limite_credito: 0.00,
-    saldo_pendiente: 0.00
+    saldo_pendiente: 0.00,
+    direccion: "San Salvador, El Salvador"
   }
 ];
 
 const DEFAULT_PRODUCTOS = [
   {
     id: 1,
-    sku: "LAP-ASUS-G14",
-    nombre: "Laptop Gamer ASUS ROG Zephyrus G14",
+    sku: "LAP-DELL-I15",
+    nombre: "Laptop Dell Inspiron 15",
     categoria: "Computación",
-    precio_costo: 1250.00,
-    margen_ganancia: 25,
-    precio_venta: 1765.63, // 1250 * 1.25 * 1.13 = 1765.625
-    stock: 8,
+    precio_costo: 500.00,
+    margen_ganancia: 30,
+    precio_venta: 650.00,
+    stock: 15,
     stock_minimo: 3,
     imagen_url: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=300&q=80"
   },
   {
     id: 2,
-    sku: "MOU-LOGI-G502",
-    nombre: "Mouse Inalámbrico Logitech G502 X Lightspeed",
+    sku: "MOU-LOGI-W",
+    nombre: "Mouse Inalámbrico Logitech",
     categoria: "Accesorios",
-    precio_costo: 65.00,
-    margen_ganancia: 30,
-    precio_venta: 95.49,
-    stock: 24,
-    stock_minimo: 6,
+    precio_costo: 15.00,
+    margen_ganancia: 66.67,
+    precio_venta: 25.00,
+    stock: 50,
+    stock_minimo: 10,
     imagen_url: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=300&q=80"
   },
   {
     id: 3,
-    sku: "MON-LG-27GP",
-    nombre: "Monitor Gamer UltraGear 27'' QHD 165Hz",
+    sku: "MON-ASUS-24",
+    nombre: "Monitor ASUS 24 Pulgadas FHD",
     categoria: "Monitores",
-    precio_costo: 220.00,
-    margen_ganancia: 28,
-    precio_venta: 318.21,
-    stock: 4, // Alerta stock bajo
+    precio_costo: 130.00,
+    margen_ganancia: 42.3,
+    precio_venta: 185.00,
+    stock: 20,
     stock_minimo: 5,
     imagen_url: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=300&q=80"
   },
   {
     id: 4,
-    sku: "TEC-COR-K70",
-    nombre: "Teclado Mecánico RGB Corsair K70 PRO",
-    categoria: "Accesorios",
-    precio_costo: 110.00,
-    margen_ganancia: 32,
-    precio_venta: 164.08,
-    stock: 12,
-    stock_minimo: 4,
-    imagen_url: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=300&q=80"
-  },
-  {
-    id: 5,
-    sku: "AUD-SONY-1000",
-    nombre: "Audífonos Inalámbricos Sony WH-1000XM5 ANC",
-    categoria: "Audio",
-    precio_costo: 260.00,
-    margen_ganancia: 35,
-    precio_venta: 396.63,
-    stock: 3, // Alerta stock bajo
-    stock_minimo: 5,
-    imagen_url: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=300&q=80"
-  },
-  {
-    id: 6,
-    sku: "SSD-SAM-990",
-    nombre: "Disco Sólido Samsung 990 PRO NVMe 2TB",
-    categoria: "Almacenamiento",
-    precio_costo: 140.00,
-    margen_ganancia: 25,
-    precio_venta: 197.75,
-    stock: 18,
-    stock_minimo: 5,
-    imagen_url: "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=300&q=80"
-  },
-  {
-    id: 7,
-    sku: "CF-PAC-400G",
-    nombre: "Café Gourmet Pacamara Salvadoreño 400g",
-    categoria: "Cafetería & Snacks",
-    precio_costo: 6.50,
-    margen_ganancia: 35,
-    precio_venta: 9.92,
-    stock: 65,
-    stock_minimo: 15,
-    imagen_url: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=300&q=80"
-  },
-  {
-    id: 8,
-    sku: "AG-ART-750ML",
-    nombre: "Agua Mineral Artesanal 750ml",
-    categoria: "Bebidas",
-    precio_costo: 1.20,
-    margen_ganancia: 50,
-    precio_venta: 2.03,
-    stock: 120,
-    stock_minimo: 25,
-    imagen_url: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=300&q=80"
-  },
-  {
-    id: 9,
-    sku: "HUB-USB-7P",
-    nombre: "Hub USB-C 7 en 1 con HDMI 4K y Power Delivery",
+    sku: "TEC-MEC-RGB",
+    nombre: "Teclado Mecánico RGB",
     categoria: "Accesorios",
     precio_costo: 28.00,
-    margen_ganancia: 35,
-    precio_venta: 42.71,
-    stock: 2, // Alerta stock crítico
-    stock_minimo: 6,
-    imagen_url: "https://images.unsplash.com/photo-1616440347437-b1c73416efc2?auto=format&fit=crop&w=300&q=80"
+    margen_ganancia: 60.7,
+    precio_venta: 45.00,
+    stock: 30,
+    stock_minimo: 8,
+    imagen_url: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=300&q=80"
   }
 ];
 
 const DEFAULT_FACTURAS = [
   {
     id: 1,
-    numero_dte: "DTE-01-M001-00004928",
+    numero_dte: "DTE-01-M001-00000001",
     codigo_generacion_uuid: "D4C2B7E1-891A-4C4D-B552-9A3FE18C0142",
     sello_recepcion_mh: "2024E677F6702BB04481A01B73FE001428",
     fecha_hora: "2024-10-18T16:42:10",
     cliente_id: 1,
-    cliente_nombre: "Distribuidora Cuscatlán S.A. de C.V.",
-    cliente_doc: "0614-230910-102-1",
-    tipo_dte: "CCF (03)",
-    subtotal: 126.11,
-    iva: 16.39,
-    total: 142.50,
+    cliente_nombre: "Juan Carlos Pérez",
+    cliente_doc: "0614-250898-101-5",
+    tipo_dte: "Factura (01)",
+    subtotal: 700.00,
+    iva: 91.00,
+    total: 791.00,
     metodo_pago: "Tarjeta Visa",
     referencia_pago: "tok_visa_49182",
-    estado_mh: "Transmitido con Éxito"
+    estado_mh: "Transmitido con Éxito",
+    cajero_responsable: "Carlos Mendoza"
   },
   {
     id: 2,
-    numero_dte: "DTE-01-M001-00004927",
+    numero_dte: "DTE-01-M001-00000002",
     codigo_generacion_uuid: "9B1F223A-C450-4F21-95E0-880F12AA5591",
     sello_recepcion_mh: "2024B119C9031EA19208B12C88FF119201",
     fecha_hora: "2024-10-18T16:38:52",
-    cliente_id: 5,
-    cliente_nombre: "Cliente Final Mostrador",
-    cliente_doc: "04981123-9",
-    tipo_dte: "Factura (01)",
-    subtotal: 25.44,
-    iva: 3.31,
-    total: 28.75,
-    metodo_pago: "Efectivo",
-    referencia_pago: "Efectivo: $30.00 | Cambio: $1.25",
-    estado_mh: "Transmitido con Éxito"
-  },
-  {
-    id: 3,
-    numero_dte: "DTE-01-M001-00004926",
-    codigo_generacion_uuid: "88CE7130-1052-4BC2-911E-F302D4E18B80",
-    sello_recepcion_mh: "2024A8812D339FF18274A09C99DE441829",
-    fecha_hora: "2024-10-18T16:34:01",
-    cliente_id: 3,
-    cliente_nombre: "Marcela Rivas de Gómez",
-    cliente_doc: "02334812-4",
-    tipo_dte: "Factura (01)",
-    subtotal: 17.52,
-    iva: 2.28,
-    total: 19.80,
-    metodo_pago: "Chivo Wallet / QR",
-    referencia_pago: "chivo_tx_889102",
-    estado_mh: "Transmitido con Éxito"
-  },
-  {
-    id: 4,
-    numero_dte: "DTE-01-M001-00004925",
-    codigo_generacion_uuid: "55A1289F-7741-4E60-A91D-44D1E89A0021",
-    sello_recepcion_mh: "2024C9918E221DA88301B20A77EE112048",
-    fecha_hora: "2024-10-18T16:30:19",
-    cliente_id: 4,
-    cliente_nombre: "Soluciones Tecnológicas SV, S.A.",
-    cliente_doc: "0614-110298-101-2",
+    cliente_id: 2,
+    cliente_nombre: "Distribuidora El Sol S.A. de C.V.",
+    cliente_doc: "0614-121223-102-1",
     tipo_dte: "CCF (03)",
-    subtotal: 274.34,
-    iva: 35.66,
-    total: 310.00,
+    subtotal: 370.00,
+    iva: 48.10,
+    total: 418.10,
     metodo_pago: "Transferencia UNI",
     referencia_pago: "uni_sv_banco_8819",
-    estado_mh: "Transmitido con Éxito"
+    estado_mh: "Transmitido con Éxito",
+    cajero_responsable: "Carlos Mendoza"
   }
 ];
 
 const DEFAULT_DETALLE_FACTURAS = [
-  { id: 1, factura_id: 1, producto_id: 2, cantidad: 1, precio_unitario_historico: 95.49, subtotal: 84.50, iva_linea: 10.99 },
-  { id: 2, factura_id: 1, producto_id: 9, cantidad: 1, precio_unitario_historico: 42.71, subtotal: 37.80, iva_linea: 4.91 },
-  { id: 3, factura_id: 2, producto_id: 7, cantidad: 2, precio_unitario_historico: 9.92, subtotal: 17.56, iva_linea: 2.28 },
-  { id: 4, factura_id: 2, producto_id: 8, cantidad: 4, precio_unitario_historico: 2.03, subtotal: 7.19, iva_linea: 0.93 },
-  { id: 5, factura_id: 3, producto_id: 7, cantidad: 2, precio_unitario_historico: 9.90, subtotal: 17.52, iva_linea: 2.28 },
-  { id: 6, factura_id: 4, producto_id: 3, cantidad: 1, precio_unitario_historico: 310.00, subtotal: 274.34, iva_linea: 35.66 }
+  { id: 1, factura_id: 1, producto_id: 1, cantidad: 1, precio_unitario_historico: 650.00, subtotal: 575.22, iva_linea: 74.78 },
+  { id: 2, factura_id: 1, producto_id: 2, cantidad: 2, precio_unitario_historico: 25.00, subtotal: 44.25, iva_linea: 5.75 },
+  { id: 3, factura_id: 2, producto_id: 3, cantidad: 2, precio_unitario_historico: 185.00, subtotal: 327.43, iva_linea: 42.57 }
 ];
 
 class FacturaFacilDB {
   constructor() {
     this.data = this.loadDatabase();
+    this.currentUser = this.loadActiveUser();
   }
 
   loadDatabase() {
@@ -278,22 +198,15 @@ class FacturaFacilDB {
         return JSON.parse(stored);
       }
     } catch (e) {
-      console.warn("No se pudo leer localStorage, usando memoria volátil:", e);
+      console.warn("Error leyendo localStorage:", e);
     }
     const initial = {
+      usuarios: DEFAULT_USERS,
       clientes: DEFAULT_CLIENTES,
       productos: DEFAULT_PRODUCTOS,
       facturas: DEFAULT_FACTURAS,
       detalle_facturas: DEFAULT_DETALLE_FACTURAS,
-      lastDteSequence: 4928,
-      activeUserRole: 'cajero', // 'cajero' | 'admin'
-      currentCashier: {
-        nombre: 'Carlos Mendoza',
-        cargo: 'Cajero / Terminal POS #02',
-        sucursal: 'Sucursal Escalón - San Salvador',
-        turno: '05h 42m',
-        baseCaja: 350.00
-      }
+      lastDteSequence: 4928
     };
     this.saveDatabase(initial);
     return initial;
@@ -303,21 +216,72 @@ class FacturaFacilDB {
     const d = dataToSave || this.data;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
-      // Notificar a otras ventanas o componentes en la misma pestaña
       window.dispatchEvent(new CustomEvent('facturafacil_sync', { detail: { timestamp: Date.now() } }));
     } catch (e) {
       console.error("Error al persistir base de datos:", e);
     }
   }
 
-  reset() {
-    localStorage.removeItem(STORAGE_KEY);
-    this.data = this.loadDatabase();
-    this.saveDatabase();
-    return this.data;
+  // --- AUTENTICACIÓN Y ROLES ---
+  loadActiveUser() {
+    try {
+      const u = localStorage.getItem(USER_KEY);
+      if (u) return JSON.parse(u);
+    } catch (e) {}
+    // Usuario por defecto si no hay sesión iniciada
+    return DEFAULT_USERS[0]; // Admin
   }
 
-  // Clientes
+  login(username, password) {
+    const user = (this.data.usuarios || DEFAULT_USERS).find(
+      u => u.username.toLowerCase() === (username || '').trim().toLowerCase() && u.password === password
+    );
+
+    if (!user) {
+      return { success: false, error: 'Usuario o contraseña incorrectos.' };
+    }
+
+    this.currentUser = user;
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+    localStorage.setItem(AUTH_KEY, `token_${user.username}_${Date.now()}`);
+
+    window.dispatchEvent(new CustomEvent('facturafacil_auth_change', { detail: { user } }));
+    return { success: true, user };
+  }
+
+  switchRole(roleName) {
+    const targetUser = (this.data.usuarios || DEFAULT_USERS).find(u => u.rol === roleName) || DEFAULT_USERS[0];
+    this.currentUser = targetUser;
+    localStorage.setItem(USER_KEY, JSON.stringify(targetUser));
+    window.dispatchEvent(new CustomEvent('facturafacil_auth_change', { detail: { user: targetUser } }));
+    return targetUser;
+  }
+
+  logout() {
+    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(AUTH_KEY);
+    this.currentUser = DEFAULT_USERS[0];
+    window.dispatchEvent(new CustomEvent('facturafacil_auth_change', { detail: { user: null } }));
+    return true;
+  }
+
+  getCurrentUser() {
+    return this.currentUser || DEFAULT_USERS[0];
+  }
+
+  getRole() {
+    return (this.currentUser && this.currentUser.rol) ? this.currentUser.rol : 'ADMIN';
+  }
+
+  isAdmin() {
+    return this.getRole() === 'ADMIN';
+  }
+
+  isCajero() {
+    return this.getRole() === 'CAJERO';
+  }
+
+  // --- CLIENTES ---
   getClientes() {
     return this.data.clientes || [];
   }
@@ -330,14 +294,14 @@ class FacturaFacilDB {
     const newId = (this.data.clientes.reduce((max, c) => Math.max(max, c.id), 0) || 0) + 1;
     const nuevo = {
       id: newId,
-      dui_nit: cliente.dui_nit || '00000000-0',
-      nombre: cliente.nombre || 'Nuevo Cliente',
+      dui_nit: cliente.dui_nit || cliente.documento_fiscal || '00000000-0',
+      nombre: cliente.nombre || cliente.nombre_completo || 'Nuevo Cliente',
       telefono: cliente.telefono || '',
-      email: cliente.email || '',
+      email: cliente.email || cliente.correo_electronico || '',
       direccion: cliente.direccion || 'San Salvador',
       tipo_contribuyente: cliente.tipo_contribuyente || 'Consumidor Final',
       nrc: cliente.nrc || '',
-      limite_credito: parseFloat(cliente.limite_credito) || 500.00,
+      limite_credito: parseFloat(cliente.limite_credito) || 1000.00,
       saldo_pendiente: 0.00
     };
     this.data.clientes.unshift(nuevo);
@@ -345,7 +309,7 @@ class FacturaFacilDB {
     return nuevo;
   }
 
-  // Productos
+  // --- PRODUCTOS ---
   getProductos() {
     return this.data.productos || [];
   }
@@ -357,7 +321,7 @@ class FacturaFacilDB {
   addProducto(prod) {
     const newId = (this.data.productos.reduce((max, p) => Math.max(max, p.id), 0) || 0) + 1;
     const costo = parseFloat(prod.precio_costo) || 0;
-    const margen = parseFloat(prod.margen_ganancia) || 25;
+    const margen = parseFloat(prod.margen_ganancia) || 30;
     const precioBase = costo * (1 + margen / 100);
     const precioVenta = prod.precio_venta ? parseFloat(prod.precio_venta) : precioBase * (1 + TASA_IVA_SV);
 
@@ -386,24 +350,22 @@ class FacturaFacilDB {
     return prod;
   }
 
-  // Facturación y Ventas (Motor de Reglas de Negocio)
+  // --- FACTURACIÓN Y VENTAS (REGLAS DTE EL SALVADOR) ---
   createVenta({ clienteId, items, metodoPago, referenciaPago = '', tipoDte = 'Factura (01)' }) {
     if (!items || items.length === 0) {
       throw new Error("No hay artículos en el carrito para facturar.");
     }
 
-    // 1. Verificar y descontar stock
+    // 1. Verificar stock
     for (const item of items) {
       const prod = this.getProductoById(item.productoId);
-      if (!prod) {
-        throw new Error(`Producto ID ${item.productoId} no encontrado en catálogo.`);
-      }
+      if (!prod) throw new Error(`Producto ID ${item.productoId} no encontrado.`);
       if (prod.stock < item.cantidad) {
         throw new Error(`Stock insuficiente para "${prod.nombre}". Disponible: ${prod.stock}, Solicitado: ${item.cantidad}`);
       }
     }
 
-    // 2. Calcular totales exactos con IVA 13% de El Salvador
+    // 2. Calcular desglose impositivo
     let totalBruto = 0;
     const detalleProcesado = [];
 
@@ -413,8 +375,6 @@ class FacturaFacilDB {
       const subtotalItemConIva = precioUnitarioConIva * item.cantidad;
       totalBruto += subtotalItemConIva;
 
-      // Desglose fiscal salvadoreño (precios de venta al público en SV ya incluyen IVA)
-      // Base imponible = Total / 1.13; IVA = Total - Base
       const subtotalNetoItem = subtotalItemConIva / (1 + TASA_IVA_SV);
       const ivaItem = subtotalItemConIva - subtotalNetoItem;
 
@@ -432,16 +392,14 @@ class FacturaFacilDB {
     const subtotalGeneral = totalBruto / (1 + TASA_IVA_SV);
     const ivaGeneral = totalBruto - subtotalGeneral;
 
-    // 3. Generar Identificadores Oficiales de Factura Electrónica (DTE El Salvador)
+    // 3. Folio DTE
     this.data.lastDteSequence = (this.data.lastDteSequence || 4928) + 1;
     const correlativo = String(this.data.lastDteSequence).padStart(8, '0');
     const numeroDte = `DTE-01-M001-${correlativo}`;
     const codigoGeneracionUUID = this.generateUUID();
     const selloRecepcionMH = `${new Date().getFullYear()}SV${this.generateRandomHex(28).toUpperCase()}`;
 
-    // Obtener cliente
-    const cliente = this.getClienteById(clienteId) || this.getClienteById(5); // Default Mostrador
-
+    const cliente = this.getClienteById(clienteId) || this.getClienteById(4); // Default Mostrador
     const nuevaFacturaId = (this.data.facturas.reduce((max, f) => Math.max(max, f.id), 0) || 0) + 1;
 
     const nuevaFactura = {
@@ -459,10 +417,11 @@ class FacturaFacilDB {
       total: parseFloat(totalBruto.toFixed(2)),
       metodo_pago: metodoPago,
       referencia_pago: referenciaPago,
-      estado_mh: "Transmitido con Éxito"
+      estado_mh: "Transmitido con Éxito",
+      cajero_responsable: this.currentUser ? this.currentUser.nombre_completo : 'Carlos Mendoza'
     };
 
-    // 4. Descontar inventario e insertar detalles
+    // 4. Descontar e insertar detalle
     let detalleMaxId = (this.data.detalle_facturas.reduce((max, d) => Math.max(max, d.id), 0) || 0);
 
     detalleProcesado.forEach(det => {
@@ -476,7 +435,6 @@ class FacturaFacilDB {
         subtotal: det.subtotal,
         iva_linea: det.iva_linea
       });
-      // Descontar inventario
       this.updateStock(det.producto_id, det.cantidad);
     });
 
@@ -504,22 +462,19 @@ class FacturaFacilDB {
     };
   }
 
-  // Analítica & KPIs para el ADMIN
+  // --- ANALÍTICA & KPIS ---
   getKPIs() {
     const facturas = this.getFacturas();
     const productos = this.getProductos();
 
-    // Ventas acumuladas
     const totalVentas = facturas.reduce((acc, f) => acc + (f.total || 0), 0);
     const totalIva = facturas.reduce((acc, f) => acc + (f.iva || 0), 0);
     const cantidadTransacciones = facturas.length;
     const ticketPromedio = cantidadTransacciones > 0 ? (totalVentas / cantidadTransacciones) : 0;
 
-    // Alertas de inventario crítico
     const stockCritico = productos.filter(p => p.stock <= p.stock_minimo);
     const stockAgotado = productos.filter(p => p.stock === 0);
 
-    // Calcular artículos más vendidos
     const ventasPorProducto = {};
     (this.data.detalle_facturas || []).forEach(d => {
       ventasPorProducto[d.producto_id] = (ventasPorProducto[d.producto_id] || 0) + d.cantidad;

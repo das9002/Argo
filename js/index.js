@@ -90,21 +90,6 @@ tailwind.config = {
         "display-hero-mobile": ["Plus Jakarta Sans", "sans-serif"],
         "numeric-pos-lg": ["Inter", "sans-serif"],
         "label-sm": ["Inter", "sans-serif"]
-      },
-      fontSize: {
-        "headline-sm": ["16px", { lineHeight: "24px", fontWeight: "600" }],
-        "numeric-pos-md": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
-        "label-md": ["13px", { lineHeight: "18px", fontWeight: "500" }],
-        "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }],
-        "display-hero": ["40px", { lineHeight: "48px", letterSpacing: "-0.02em", fontWeight: "700" }],
-        "headline-lg-mobile": ["22px", { lineHeight: "30px", letterSpacing: "-0.01em", fontWeight: "600" }],
-        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
-        "headline-lg": ["28px", { lineHeight: "36px", letterSpacing: "-0.015em", fontWeight: "600" }],
-        "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-        "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
-        "display-hero-mobile": ["30px", { lineHeight: "38px", letterSpacing: "-0.01em", fontWeight: "700" }],
-        "numeric-pos-lg": ["32px", { lineHeight: "36px", letterSpacing: "-0.02em", fontWeight: "700" }],
-        "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.04em", fontWeight: "600" }]
       }
     }
   }
@@ -144,16 +129,19 @@ window.showToast = function(message, type = 'success', duration = 3500) {
   }, duration);
 };
 
-// 3. Sistema de Enrutamiento Inteligente para estructura (Root: index.html, Subcarpeta: html/*.html)
+// 3. Sistema de Enrutamiento Inteligente e Integración de Autenticación
 document.addEventListener('DOMContentLoaded', () => {
-  const currentFile = window.location.pathname.split('/').pop() || 'index.html';
-  const isInsideHtmlFolder = window.location.pathname.includes('/html/') || window.location.pathname.endsWith('/html') || (window.location.href.includes('/html/'));
+  const currentPath = window.location.pathname;
+  const currentFile = currentPath.split('/').pop() || 'index.html';
+  const isInsideHtmlFolder = currentPath.includes('/html/');
 
   function resolveNavUrl(destination) {
     if (destination === 'index.html') {
       return isInsideHtmlFolder ? '../index.html' : 'index.html';
     }
-    // Para destinos dentro de html/ (pos.html, inventario.html, clientes.html, facturas.html)
+    if (destination === 'login.html') {
+      return isInsideHtmlFolder ? 'login.html' : 'html/login.html';
+    }
     return isInsideHtmlFolder ? destination : `html/${destination}`;
   }
 
@@ -162,8 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'dashboard-kpis': 'index.html',
     'catalogo-inventario': 'inventario.html',
     'facturas-dte-hacienda': 'facturas.html',
-    'directorio-clientes': 'clientes.html',
-    'reportes-libro-iva': 'index.html#reportes-fiscales'
+    'directorio-clientes': 'clientes.html'
   };
 
   document.querySelectorAll('[data-path]').forEach(el => {
@@ -181,5 +168,46 @@ document.addEventListener('DOMContentLoaded', () => {
     if (targetFile && (currentFile === targetFile || (currentFile === '' && targetFile === 'index.html'))) {
       link.className = 'flex items-center gap-space-sm px-space-sm py-2.5 rounded-lg bg-secondary-container text-on-secondary-container font-semibold shadow-sm transition-all';
     }
+  });
+
+  // Renderizar información del usuario activo e indicador de rol
+  function updateUIForActiveUser() {
+    if (!window.facturaDB) return;
+    const user = window.facturaDB.getCurrentUser();
+
+    // Actualizar nombre y rol en header
+    const userDisplayNames = document.querySelectorAll('.user-display-name');
+    userDisplayNames.forEach(el => el.textContent = user.nombre_completo || user.username);
+
+    const userDisplayRoles = document.querySelectorAll('.user-display-role');
+    userDisplayRoles.forEach(el => el.textContent = `${user.rol} / ${user.cargo || 'Operador'}`);
+
+    const userAvatars = document.querySelectorAll('.user-display-avatar');
+    userAvatars.forEach(el => {
+      const initials = (user.nombre_completo || user.username)
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .substring(0, 2)
+        .toUpperCase();
+      el.textContent = initials || 'US';
+      if (user.rol === 'ADMIN') {
+        el.className = 'w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-xs user-display-avatar';
+      } else {
+        el.className = 'w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center font-bold text-xs user-display-avatar';
+      }
+    });
+
+    // Control de Permisos por Rol (RBAC): si es Cajero en la página de Dashboard Admin, mostrar aviso o restringir
+    if (user.rol === 'CAJERO' && (currentFile === 'index.html' || currentFile === '')) {
+      const adminOnlyElements = document.querySelectorAll('.admin-only');
+      adminOnlyElements.forEach(el => el.classList.add('opacity-50', 'pointer-events-none'));
+    }
+  }
+
+  updateUIForActiveUser();
+
+  window.addEventListener('facturafacil_auth_change', () => {
+    updateUIForActiveUser();
   });
 });

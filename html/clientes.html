@@ -59,11 +59,18 @@
       </div>
 
       <div class="flex items-center gap-space-sm min-w-max justify-end">
-        <div class="flex items-center gap-space-sm pl-1">
-          <div class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-xs">DS</div>
+        <a href="login.html" class="px-2.5 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container font-label-sm text-label-sm font-semibold text-on-surface transition-colors flex items-center gap-1" title="Cambiar de Usuario / Iniciar Sesión">
+          <span class="material-symbols-outlined text-[16px] text-secondary">switch_account</span>
+          <span class="hidden sm:inline">Cambiar Rol</span>
+        </a>
+
+        <div class="h-6 w-[1px] bg-outline-variant/40"></div>
+
+        <div class="flex items-center gap-space-sm pl-1 cursor-pointer" onclick="window.location.href='login.html'">
+          <div class="w-8 h-8 rounded-full bg-secondary text-white flex items-center justify-center font-bold text-xs user-display-avatar">DS</div>
           <div class="hidden sm:block text-left">
-            <div class="font-label-md text-label-md font-semibold text-on-surface leading-tight">Diego Siliezar</div>
-            <div class="font-label-sm text-label-sm text-secondary font-medium leading-tight">ADMIN / Cartera</div>
+            <div class="font-label-md text-label-md font-semibold text-on-surface leading-tight user-display-name">Diego Siliezar</div>
+            <div class="font-label-sm text-label-sm text-secondary font-medium leading-tight user-display-role">ADMIN / Cartera</div>
           </div>
         </div>
       </div>
@@ -104,7 +111,6 @@
     <main class="relative w-full pt-16 bg-surface min-h-screen">
       <div class="flex flex-col w-full px-gutter-desktop py-space-lg gap-space-lg">
 
-        <!-- Encabezado de Sección y Botón Agregar -->
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
           <div class="flex flex-col gap-0.5">
             <div class="flex items-center gap-space-xs">
@@ -124,7 +130,6 @@
           </div>
         </div>
 
-        <!-- Métricas Rápidas -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
           <div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-between">
             <div class="flex flex-col">
@@ -177,7 +182,6 @@
           </div>
         </div>
 
-        <!-- Barra de Control Operativo -->
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-space-md p-space-md rounded-xl bg-surface-container-lowest shadow-sm">
           <div class="relative flex-1 min-w-[280px]">
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
@@ -194,7 +198,6 @@
           </div>
         </div>
 
-        <!-- Tabla de Clientes -->
         <div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
