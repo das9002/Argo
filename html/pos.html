@@ -69,24 +69,20 @@
         </div>
       </div>
 
-      <!-- Sección Derecha: Información del Cajero -->
+      <!-- Sección Derecha: Información del Usuario Activo -->
       <div class="flex items-center gap-space-sm min-w-max justify-end">
-        <div class="hidden lg:flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-surface-container-low font-label-sm text-label-sm text-on-surface">
-          <span class="material-symbols-outlined text-secondary text-[16px]">wifi</span>
-          <span class="font-semibold">Sync 100%</span>
-        </div>
-        <div class="hidden 2xl:flex items-center gap-1.5 px-space-sm py-1 rounded-lg bg-surface-container-low font-label-sm text-label-sm text-on-surface">
-          <span class="material-symbols-outlined text-on-surface-variant text-[16px]">timer</span>
-          <span class="font-medium">Turno: 05h 42m</span>
-          <span class="text-outline">|</span>
-          <span class="font-semibold text-secondary font-numeric-pos-md text-body-sm">Caja: $350.00</span>
-        </div>
+        <a href="login.html" class="px-2.5 py-1.5 rounded-lg bg-surface-container-low hover:bg-surface-container font-label-sm text-label-sm font-semibold text-on-surface transition-colors flex items-center gap-1" title="Cambiar de Usuario / Iniciar Sesión">
+          <span class="material-symbols-outlined text-[16px] text-secondary">switch_account</span>
+          <span class="hidden sm:inline">Cambiar Rol</span>
+        </a>
+
         <div class="h-6 w-[1px] bg-outline-variant/40"></div>
-        <div class="flex items-center gap-space-sm pl-1">
-          <div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center font-bold text-xs">CM</div>
+
+        <div class="flex items-center gap-space-sm pl-1 cursor-pointer" onclick="window.location.href='login.html'">
+          <div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center font-bold text-xs user-display-avatar">CM</div>
           <div class="hidden sm:block text-left">
-            <div class="font-label-md text-label-md font-semibold text-on-surface leading-tight">Carlos Mendoza</div>
-            <div class="font-label-sm text-label-sm text-on-surface-variant leading-tight">Cajero / Operador</div>
+            <div class="font-label-md text-label-md font-semibold text-on-surface leading-tight user-display-name">Carlos Mendoza</div>
+            <div class="font-label-sm text-label-sm text-on-surface-variant leading-tight user-display-role">CAJERO / Operador</div>
           </div>
         </div>
       </div>
@@ -137,14 +133,14 @@
   <!-- Contenido Principal POS: Catálogo a la izquierda, Carrito Virtual a la derecha -->
   <div class="pl-64 no-print">
     <main class="pt-16 bg-surface min-h-screen flex flex-col lg:flex-row">
-      <!-- Sección Izquierda: Catálogo de Productos y Filtros (60%-65%) -->
+      <!-- Sección Izquierda: Catálogo de Productos y Filtros -->
       <section class="flex-1 p-space-md lg:p-space-lg flex flex-col gap-space-md overflow-y-auto max-h-[calc(100vh-4rem)]">
         <!-- Barra de Búsqueda y Filtros de Categoría -->
         <div class="flex flex-col gap-space-sm bg-surface-container-lowest p-space-md rounded-2xl shadow-sm">
           <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-space-sm">
             <div class="relative flex-1">
               <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
-              <input id="productSearchInput" class="w-full h-11 pl-10 pr-4 rounded-xl bg-surface-container-low font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container focus:ring-2 focus:ring-secondary/30 transition-all" placeholder="Buscar por nombre, SKU o código de barra (ej. Laptop, Mouse)..." type="text" autofocus />
+              <input id="productSearchInput" class="w-full h-11 pl-10 pr-4 rounded-xl bg-surface-container-low font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container focus:ring-2 focus:ring-secondary/30 transition-all" placeholder="Buscar por nombre, SKU o código de barra..." type="text" autofocus />
             </div>
             <button id="btnClearSearch" class="h-11 px-space-md rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant font-label-md text-label-md flex items-center justify-center gap-1 transition-colors">
               <span class="material-symbols-outlined text-[18px]">clear_all</span>
@@ -152,21 +148,18 @@
             </button>
           </div>
 
-          <!-- Categorías en formato Chips / Pills -->
+          <!-- Categorías -->
           <div id="categoryPillsContainer" class="flex items-center gap-2 overflow-x-auto pb-1 pt-1 text-label-md font-label-md">
-            <!-- Renderizado dinámico -->
           </div>
         </div>
 
         <!-- Grid de Productos -->
         <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-space-md pb-12">
-          <!-- Tarjetas renderizadas dinámicamente con JavaScript -->
         </div>
       </section>
 
-      <!-- Sección Derecha: Carrito de Compras Virtual y Facturación (35%-40%) -->
+      <!-- Sección Derecha: Carrito Virtual y Facturación -->
       <aside class="w-full lg:w-[440px] xl:w-[480px] bg-surface-container-lowest border-l border-outline-variant/30 flex flex-col justify-between shadow-lg lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)]">
-        <!-- Encabezado de la Orden y Selección de Cliente -->
         <div class="p-space-md border-b border-outline-variant/30 flex flex-col gap-3">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -191,7 +184,6 @@
             </label>
             <div class="relative">
               <select id="clientSelect" class="w-full h-10 pl-3 pr-8 rounded-xl bg-surface-container-low font-label-md text-label-md text-on-surface appearance-none focus:outline-none focus:ring-2 focus:ring-secondary/30 cursor-pointer">
-                <!-- Opciones de clientes dinámicas -->
               </select>
               <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">expand_more</span>
             </div>
@@ -200,7 +192,7 @@
             </div>
           </div>
 
-          <!-- Selector de Tipo de Documento -->
+          <!-- Tipo de Documento -->
           <div class="flex items-center bg-surface-container-low p-1 rounded-xl">
             <button id="btnDocFactura" class="flex-1 py-1.5 text-center font-label-md text-label-md rounded-lg bg-surface-container-lowest font-semibold text-on-surface shadow-sm transition-all">
               Factura (01)
@@ -211,12 +203,9 @@
           </div>
         </div>
 
-        <!-- Lista de Artículos en el Carrito (Scrollable) -->
         <div id="cartItemsList" class="flex-1 p-space-md overflow-y-auto divide-y divide-outline-variant/20 flex flex-col">
-          <!-- Items renderizados dinámicamente -->
         </div>
 
-        <!-- Resumen de Totales y Botón de Pago -->
         <div class="p-space-md bg-surface-container-low/70 border-t border-outline-variant/30 flex flex-col gap-3">
           <div class="flex flex-col gap-1.5 text-body-sm font-body-sm">
             <div class="flex items-center justify-between text-on-surface-variant">
@@ -237,7 +226,6 @@
             </div>
           </div>
 
-          <!-- Botón de Cobro / Checkout -->
           <button id="btnProceedPayment" class="w-full h-13 py-3.5 bg-secondary text-white rounded-xl font-headline-sm text-headline-sm font-bold shadow-md hover:bg-[#00583b] active:scale-[0.99] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:pointer-events-none" disabled>
             <span class="material-symbols-outlined text-[22px]">payments</span>
             <span>COBRAR / PROCESAR VENTA</span>
@@ -247,7 +235,7 @@
     </main>
   </div>
 
-  <!-- MODAL DE PAGO / CHECKOUT PASARELA -->
+  <!-- MODAL DE PAGO -->
   <div id="paymentModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-surface-container-lowest rounded-2xl max-w-lg w-full shadow-2xl overflow-hidden flex flex-col transform transition-all">
       <div class="p-space-md bg-surface-container-low border-b border-outline-variant/30 flex items-center justify-between">
@@ -293,7 +281,7 @@
           </div>
         </div>
 
-        <!-- 1. Efectivo -->
+        <!-- Efectivo -->
         <div id="methodSectionEfectivo" class="flex flex-col gap-3">
           <div class="flex flex-col gap-1">
             <label class="font-label-sm text-label-sm text-on-surface-variant font-medium">Efectivo Recibido ($ USD)</label>
@@ -316,7 +304,7 @@
           </div>
         </div>
 
-        <!-- 2. Tarjeta -->
+        <!-- Tarjeta -->
         <div id="methodSectionTarjeta" class="hidden flex flex-col gap-3">
           <div class="p-space-sm rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-center justify-between text-xs">
             <span class="flex items-center gap-1 font-semibold text-secondary">
@@ -350,7 +338,7 @@
           </div>
         </div>
 
-        <!-- 3. Chivo / QR -->
+        <!-- Chivo / QR -->
         <div id="methodSectionChivo" class="hidden flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-xl gap-2 text-center">
           <div class="w-32 h-32 bg-white p-2 rounded-xl border border-outline-variant/40 flex items-center justify-center shadow-sm">
             <svg class="w-full h-full text-black" viewBox="0 0 100 100" fill="currentColor">
@@ -372,7 +360,7 @@
           <span class="font-body-sm text-xs text-outline">Liquidación instantánea en Dólares (USD) o Bitcoin</span>
         </div>
 
-        <!-- 4. Transferencia -->
+        <!-- Transferencia -->
         <div id="methodSectionTransferencia" class="hidden flex flex-col gap-2 p-3 bg-surface-container-low rounded-xl">
           <div class="font-label-sm text-label-sm text-on-surface font-semibold">Cuenta Bancaria para Transferencias UNI:</div>
           <div class="font-mono text-xs text-on-surface-variant">Banco Cuscatlán: 01-402-009812-4</div>
@@ -393,7 +381,7 @@
     </div>
   </div>
 
-  <!-- MODAL DE TICKET / FACTURA ELECTRÓNICA DTE -->
+  <!-- MODAL DE TICKET -->
   <div id="invoiceSuccessModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-surface-container-lowest rounded-2xl max-w-md w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-space-md bg-secondary text-white flex items-center justify-between">
@@ -409,7 +397,6 @@
         </button>
       </div>
 
-      <!-- Área de Ticket Térmico 80mm -->
       <div class="p-6 overflow-y-auto bg-gray-50 flex justify-center">
         <div id="thermalTicketPrintArea" class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm w-full max-w-[340px] text-black font-mono text-xs flex flex-col gap-2">
           <div class="text-center flex flex-col items-center">
@@ -427,7 +414,7 @@
             <div><strong>Código Gen (UUID):</strong> <span id="ticketUuid" class="text-[9px] break-all">...</span></div>
             <div><strong>Sello MH:</strong> <span id="ticketSelloMh" class="text-[9px] break-all">...</span></div>
             <div><strong>Fecha/Hora:</strong> <span id="ticketFechaHora">...</span></div>
-            <div><strong>Cajero:</strong> Carlos Mendoza (Caja #02)</div>
+            <div><strong>Cajero:</strong> <span class="user-display-name">Carlos Mendoza</span> (Caja #02)</div>
             <div><strong>Cliente:</strong> <span id="ticketClienteNombre">...</span></div>
             <div><strong>DUI/NIT:</strong> <span id="ticketClienteDoc">...</span></div>
           </div>
@@ -542,7 +529,6 @@
     </div>
   </div>
 
-  <!-- Lógica de Operación del Terminal POS -->
   <script src="../js/pos.js"></script>
 </body>
 

@@ -1,0 +1,238 @@
+{
+  "roles": [
+    {
+      "id": 1,
+      "nombre_rol": "ADMIN",
+      "descripcion": "Administrador general del sistema con acceso total"
+    },
+    {
+      "id": 2,
+      "nombre_rol": "CAJERO",
+      "descripcion": "Operador de terminal POS para emisión de ventas y DTE"
+    }
+  ],
+  "usuarios": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "123",
+      "nombre_completo": "Diego Siliezar",
+      "correo": "diego.admin@facturafacil.sv",
+      "rol": "ADMIN",
+      "rol_id": 1,
+      "activo": true
+    },
+    {
+      "id": 2,
+      "username": "cajero",
+      "password": "123",
+      "nombre_completo": "Carlos Mendoza",
+      "correo": "carlos.mendoza@facturafacil.sv",
+      "rol": "CAJERO",
+      "rol_id": 2,
+      "activo": true
+    }
+  ],
+  "clientes": [
+    {
+      "id": 1,
+      "nombre": "Juan Carlos Pérez",
+      "dui_nit": "0614-250898-101-5",
+      "email": "juan.perez@email.com",
+      "telefono": "+503 7788-9900",
+      "tipo_contribuyente": "Consumidor Final",
+      "nrc": "",
+      "limite_credito": 1500,
+      "saldo_pendiente": 0,
+      "direccion": "Colonia Escalón, San Salvador"
+    },
+    {
+      "id": 2,
+      "nombre": "Distribuidora El Sol S.A. de C.V.",
+      "dui_nit": "0614-121223-102-1",
+      "email": "contacto@elsol.com",
+      "telefono": "+503 2255-4433",
+      "tipo_contribuyente": "Crédito Fiscal (CCF)",
+      "nrc": "238910-4",
+      "limite_credito": 10000,
+      "saldo_pendiente": 1420,
+      "direccion": "Alameda Roosevelt #234, San Salvador"
+    },
+    {
+      "id": 3,
+      "nombre": "María Elena López",
+      "dui_nit": "0501-100201-104-3",
+      "email": "maria.lopez@email.com",
+      "telefono": "+503 7122-3344",
+      "tipo_contribuyente": "Consumidor Final",
+      "nrc": "",
+      "limite_credito": 800,
+      "saldo_pendiente": 0,
+      "direccion": "Santa Tecla, La Libertad"
+    },
+    {
+      "id": 4,
+      "nombre": "Cliente Final Mostrador",
+      "dui_nit": "00000000-0",
+      "email": "cliente.final@facturafacil.sv",
+      "telefono": "+503 2200-0000",
+      "tipo_contribuyente": "Consumidor Final",
+      "nrc": "",
+      "limite_credito": 0,
+      "saldo_pendiente": 0,
+      "direccion": "San Salvador, El Salvador"
+    }
+  ],
+  "productos": [
+    {
+      "id": 1,
+      "sku": "LAP-DELL-I15",
+      "nombre": "Laptop Dell Inspiron 15",
+      "categoria": "Computación",
+      "precio_costo": 500,
+      "margen_ganancia": 30,
+      "precio_venta": 650,
+      "stock": 15,
+      "stock_minimo": 3,
+      "imagen_url": "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "id": 2,
+      "sku": "MOU-LOGI-W",
+      "nombre": "Mouse Inalámbrico Logitech",
+      "categoria": "Accesorios",
+      "precio_costo": 15,
+      "margen_ganancia": 66.67,
+      "precio_venta": 25,
+      "stock": 49,
+      "stock_minimo": 10,
+      "imagen_url": "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "id": 3,
+      "sku": "MON-ASUS-24",
+      "nombre": "Monitor ASUS 24 Pulgadas FHD",
+      "categoria": "Monitores",
+      "precio_costo": 130,
+      "margen_ganancia": 42.3,
+      "precio_venta": 185,
+      "stock": 20,
+      "stock_minimo": 5,
+      "imagen_url": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "id": 4,
+      "sku": "TEC-MEC-RGB",
+      "nombre": "Teclado Mecánico RGB",
+      "categoria": "Accesorios",
+      "precio_costo": 28,
+      "margen_ganancia": 60.7,
+      "precio_venta": 45,
+      "stock": 30,
+      "stock_minimo": 8,
+      "imagen_url": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=300&q=80"
+    }
+  ],
+  "facturas": [
+    {
+      "id": 3,
+      "numero_dte": "DTE-01-M001-00004931",
+      "codigo_generacion_uuid": "BC165724-1888-4BD1-AFB5-150B3CF721DD",
+      "sello_recepcion_mh": "2026SVE20E1FD3C6A7E",
+      "fecha_hora": "2026-10-29T00:15:03.436Z",
+      "cliente_id": 1,
+      "cliente_nombre": "Juan Carlos Pérez",
+      "cliente_doc": "0614-250898-101-5",
+      "tipo_dte": "Factura (01)",
+      "subtotal": 22.12,
+      "iva": 2.88,
+      "total": 25,
+      "metodo_pago": "Efectivo",
+      "referencia_pago": "",
+      "estado_mh": "Transmitido con Éxito",
+      "cajero_responsable": "Carlos Mendoza"
+    },
+    {
+      "id": 1,
+      "numero_dte": "DTE-01-M001-00000001",
+      "codigo_generacion_uuid": "D4C2B7E1-891A-4C4D-B552-9A3FE18C0142",
+      "sello_recepcion_mh": "2024E677F6702BB04481A01B73FE001428",
+      "fecha_hora": "2026-10-29T00:12:59.530Z",
+      "cliente_id": 1,
+      "cliente_nombre": "Juan Carlos Pérez",
+      "cliente_doc": "0614-250898-101-5",
+      "tipo_dte": "Factura (01)",
+      "subtotal": 700,
+      "iva": 91,
+      "total": 791,
+      "metodo_pago": "Tarjeta Visa",
+      "referencia_pago": "tok_visa_49182",
+      "estado_mh": "Transmitido con Éxito",
+      "cajero_responsable": "Carlos Mendoza"
+    },
+    {
+      "id": 2,
+      "numero_dte": "DTE-01-M001-00000002",
+      "codigo_generacion_uuid": "9B1F223A-C450-4F21-95E0-880F12AA5591",
+      "sello_recepcion_mh": "2024B119C9031EA19208B12C88FF119201",
+      "fecha_hora": "2026-10-29T00:12:59.611Z",
+      "cliente_id": 2,
+      "cliente_nombre": "Distribuidora El Sol S.A. de C.V.",
+      "cliente_doc": "0614-121223-102-1",
+      "tipo_dte": "CCF (03)",
+      "subtotal": 370,
+      "iva": 48.1,
+      "total": 418.1,
+      "metodo_pago": "Transferencia UNI",
+      "referencia_pago": "uni_sv_banco_8819",
+      "estado_mh": "Transmitido con Éxito",
+      "cajero_responsable": "Carlos Mendoza"
+    }
+  ],
+  "detalle_facturas": [
+    {
+      "id": 1,
+      "factura_id": 1,
+      "producto_id": 1,
+      "cantidad": 1,
+      "precio_unitario_historico": 650,
+      "subtotal": 575.22,
+      "iva_linea": 74.78
+    },
+    {
+      "id": 2,
+      "factura_id": 1,
+      "producto_id": 2,
+      "cantidad": 2,
+      "precio_unitario_historico": 25,
+      "subtotal": 44.25,
+      "iva_linea": 5.75
+    },
+    {
+      "id": 3,
+      "factura_id": 2,
+      "producto_id": 3,
+      "cantidad": 2,
+      "precio_unitario_historico": 185,
+      "subtotal": 327.43,
+      "iva_linea": 42.57
+    },
+    {
+      "id": 4,
+      "factura_id": 3,
+      "producto_id": 2,
+      "cantidad": 1,
+      "precio_unitario_historico": 25,
+      "subtotal": 22.12,
+      "iva_linea": 2.88
+    }
+  ],
+  "sessions": {
+    "token_admin_1793232870852": {
+      "user_id": 1,
+      "username": "admin",
+      "rol": "ADMIN",
+      "created_at": "2026-10-29T00:14:30.852Z"
+    }
+  }
+}
